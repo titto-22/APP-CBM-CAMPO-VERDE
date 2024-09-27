@@ -5,22 +5,13 @@ export default function App() {
   const [pageLogin,setPageLogin]=useState(false)
   const [pageCadastro,setpageCadastro]=useState(false)
 
+  
+
   return (
     <View style={styles.containerMain}>
-      <View style={styles.flexRow}>
-        <Image source={require("./src/assets/Logo400x400.png")} style={styles.logoMain} alt='Logo do Corpo de bombeiros Militar de Mato Grosso' />
-        <Text style={styles.textMain}>Emergências</Text>
-        <Text style={styles.textMain}>193</Text>
-      </View>
-      <Text style={styles.textBase}>Efetue seu Login</Text>
-      <View style={styles.flexRow}>
-        <TouchableOpacity onPress={()=>{}} style={styles.buttonSemiRounded}>
-          <Image source={require('./src/assets/iconFacebook.png')}  style={styles.icon}/>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={()=>{}} style={styles.buttonSemiRounded}>
-          <Image source={require('./src/assets/iconGoogle.png')}  style={styles.icon}/>
-        </TouchableOpacity>
-      </View>
+      <Text style={styles.textMain}>EMERGÊNCIAS</Text>
+      <Text style={styles.textMain}>193</Text>
+      <Image source={require("./src/assets/Logo400x400.png")} style={styles.logoMain} alt='Logo do Corpo de bombeiros Militar de Mato Grosso' />
       <TouchableOpacity onPress={()=>{}} style={styles.button}>
         <Text style={styles.textoButton}>ENTRAR</Text>
       </TouchableOpacity>
@@ -38,45 +29,21 @@ export default function App() {
 const styles = StyleSheet.create({
   containerMain: {
     flex: 1,
+    backgroundColor: '#ff0000',
     alignItems: 'center',
-    justifyContent: 'space-around',
-    padding:20,
-  },
-  flexRow:{
-    width:'100%',
-    flexDirection:'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
+    marginTop:"10%",
+    borderTopColor: '#000000',
+    borderTopWidth:1
   },
   logoMain:{
-    width:60,
+    width:"60%",
     objectFit: "contain"
   },
   textMain:{
     fontSize:36,
     fontWeight: 'bold',
-    color:'#ff0000'
-  },
-  textBase:{
-    fontSize:20,
-    color:'#64748b'
-  },
-  buttonSemiRounded:{
-    width:80,
-    height:50,
-    borderRadius:'50%',
-    alignItems:'center',
-    justifyContent:'center',
-    shadowColor: "#000",
-    shadowOffset:{
-      width: 0,
-      height: 0
-    },
-    shadowOpacity:0.6,
-    shadowRadius:10
-  },
-  andoridElevatoin:{
-    elevation:10
+    color:'#fff'
   },
   button:{
     backgroundColor: '#fff',
