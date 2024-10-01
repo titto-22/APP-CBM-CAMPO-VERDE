@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
+import { StatusBar } from 'expo-status-bar'
 
 export default function App() {
+  const [logado,setLogado]=useState(false)
   const [pageLogin,setPageLogin]=useState(false)
   const [pageCadastro,setpageCadastro]=useState(false)
   const [userEmail, setUserEmail]=useState('')
@@ -14,6 +16,7 @@ export default function App() {
 
   return (
     <View style={styles.containerMain}>
+       <StatusBar animated='animated' style="auto" translucent='false'/>
       <View style={[styles.flexRow,{marginBottom:75}]}>
         <Image source={require("./src/assets/Logo400x400.png")} style={styles.logoMain} alt='Logo do Corpo de bombeiros Militar de Mato Grosso' />
         <Text style={styles.textMain}>
@@ -38,14 +41,14 @@ export default function App() {
           </View>
         </TouchableOpacity>
       </View>
-      <View style={{width:'80%'}}>
-        <View style={styles.containerTextTopInput}>
+      <View style={styles.with80}>
+        <View style={[styles.containerTextTopInput]}>
           <Text style={styles.textTopInput}>
             E-mail:
           </Text>
         </View>
         <TextInput
-        style={styles.input}
+        style={[styles.input,styles.withFull]}
           onChangeText={setUserEmail}
           value={userEmail}
           placeholder="Inseira seu e-mail"
@@ -61,7 +64,7 @@ export default function App() {
           </Text>
         </View>
         <TextInput
-        style={styles.input}
+        style={[styles.input,styles.withFull]}
           onChangeText={setUserEmail}
           value={userEmail}
           placeholder="Inseira seu e-mail"
@@ -71,11 +74,25 @@ export default function App() {
         <Text style={[{display:errorPasseord?'flex':'none'},styles.textTopInput]}>
           Senha deve ao menos ter 8 digitos, uma letra maiúscula, uma minúscula e um caractere especial
         </Text>
+        <TouchableOpacity onPress={()=>{}} style={[styles.buttonSemiRounded,styles.backgroundRed, styles.withFull,styles.marginTop20]}>
+          <Text style={styles.textoButtonWith}>Acessar</Text>
+        </TouchableOpacity>
       </View>
-      
+      <Text style={[styles.textTopInput,styles.marginTop20]}>
+        Esqueceu a senha?
+      </Text>
+      <Text style={[styles.textTopInput,styles.marginTop]}>
+        ou
+      </Text>
+      <Text style={[styles.textRed,styles.marginTop]}>
+        Registrar-se
+      </Text>
       <TouchableOpacity onPress={()=>{}} style={styles.buttonCall}>
-        <Image source={require('./src/assets/call.png')} style={styles.icon} />
-        <Text style={styles.textoButton}>193</Text>
+        <Image 
+          source={require('./src/assets/call.png')} 
+          style={styles.iconSmall}
+        />
+        <Text style={[styles.textRed,styles.textBold]}>193</Text>
       </TouchableOpacity>
     </View>
   )
@@ -104,8 +121,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color:'#ff0000'
   },
+  backgroundRed:{
+    backgroundColor:'#ff0000'
+  },
+  marginTop20:{
+    marginTop:20
+  },
   textBase:{
-    fontSize:20,
+    fontSize:26,
     color:'#64748b',
     fontWeight:'bold',
   },
@@ -134,29 +157,40 @@ const styles = StyleSheet.create({
     color: '#94a3b8',
   },
  textTopInput:{
-  color:'#94a3b8'
+  color:'#64748b'
+ },
+ textBold:{
+  fontWeight:'bold'
+ },
+ textRed:{
+  color: '#ff0000'
+ },
+ withFull:{
+  width:'100%'
+ },
+ with80:{
+  width:'80%'
  },
   input:{
     borderWidth:1,
     borderColor:'#94a3b8',
     borderRadius:4,
     padding:10,
-    width:'100%',
   },
-  textoButton:{
-    fontSize:20,
+  textoButtonWith:{
+    fontSize:16,
     fontWeight:'bold',
-    color:'#ff0000'
+    color:'#fff'
   },
   buttonCall:{
     backgroundColor: '#fff',
     borderWidth:1,
-    margin:12,
+    marginTop:50,
     padding:5,
     borderRadius:'50%',
     alignItems:'center',
     justifyContent:'center',
-    width:150
+    width:120
   },
   containerIcon:{
     padding:10,
@@ -169,6 +203,9 @@ const styles = StyleSheet.create({
   icon:{
     width:40,
     height:40,
-    
   },
+  iconSmall:{
+    width:25,
+    height:25
+  }
 });
