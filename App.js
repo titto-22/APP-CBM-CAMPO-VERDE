@@ -1,104 +1,163 @@
 import { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
 import { StatusBar } from 'expo-status-bar'
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import HomeEmergencias from './src/pages/HomeEmergencias';
+import Registrarse from './src/pages/Registrarse';
 
 export default function App() {
   const [logado,setLogado]=useState(false)
   const [pageLogin,setPageLogin]=useState(false)
   const [pageCadastro,setpageCadastro]=useState(false)
   const [userEmail, setUserEmail]=useState('')
+  const [userPassWord, setUserPassWord]=useState('')
   const [errorEmail,seterrorEmail]=useState(false)
   const [errorPasseord,seterrorPasseord]=useState(false)
 
-  function onChangeEmail(){
+  //Cria navegação
+  const Stack = createNativeStackNavigator();
 
+  //Pagina de login
+  function Login({ navigation }) {
+    return (
+      <View style={styles.containerMain}>
+          <StatusBar animated='animated' style="auto" translucent='false'/>
+          <View style={[styles.flexRow,{marginBottom:75}]}>
+            <Image source={require("./src/assets/Logo400x400.png")} style={styles.logoMain} alt='Logo do Corpo de bombeiros Militar de Mato Grosso' />
+            <Text style={styles.textMain}>
+              Emergências
+            </Text>
+            <Text style={styles.textMain}>
+              193
+            </Text>
+          </View>
+          <Text style={[styles.textBase,{marginBottom:32}]}>
+            Efetue seu Login
+          </Text>
+          <View style={styles.flexRow}>
+            <TouchableOpacity onPress={()=>{}} style={styles.buttonSemiRounded}>
+              <View style={styles.containerIcon}>
+                <Image source={require('./src/assets/iconFacebook.png')}  style={styles.icon}/>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=>{}} style={styles.buttonSemiRounded}>
+              <View style={styles.containerIcon}>
+                <Image source={require('./src/assets/iconGoogle.png')}  style={styles.icon}/>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.with80}>
+            <View style={[styles.containerTextTopInput]}>
+              <Text style={styles.textTopInput}>
+                E-mail:
+              </Text>
+            </View>
+            <TextInput
+            style={[styles.input,styles.withFull]}
+              onChangeText={setUserEmail}
+              value={userEmail}
+              placeholder="Inseira seu e-mail"
+              keyboardType="e
+              mail-address"
+            />
+            <Text style={[{display:errorEmail?'flex':'none'},styles.textTopInput]}>
+              E-mail deve ser no formato: exemplo@gmail.com
+            </Text>
+            <View style={styles.containerTextTopInput}>
+              <Text style={styles.textTopInput}>
+                Senha:
+              </Text>
+            </View>
+            <TextInput
+            style={[styles.input,styles.withFull]}
+              onChangeText={setUserPassWord}
+              value={userPassWord}
+              placeholder="Inseira seu e-mail"
+              keyboardType="e
+              mail-address"
+            />
+            <Text style={[{display:errorPasseord?'flex':'none'},styles.textTopInput]}>
+              Senha deve ao menos ter 8 digitos, uma letra maiúscula, uma minúscula e um caractere especial
+            </Text>
+            <TouchableOpacity onPress={()=>{navigation.navigate('Emergências')}} style={[styles.buttonSemiRounded,styles.backgroundRed, styles.withFull,styles.marginTop20]}>
+              <Text style={styles.textoButtonWith}>
+                Acessar
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity onPress={()=>{navigation.navigate('Registrar-se')}}>
+            <Text style={[styles.textTopInput,styles.marginTop20]}>
+              Esqueceu a senha?
+            </Text>
+          </TouchableOpacity>
+          <Text style={[styles.textTopInput,styles.marginTop]}>
+            ou
+          </Text>
+          <TouchableOpacity onPress={()=>{navigation.navigate('Registrar-se',{
+            TesteDeParametros:1,
+            TesteDeParametrosText:'texto',
+            
+          })}}>
+            <Text style={[styles.textRed,styles.marginTop]}>
+              Registrar-se
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>{}} style={styles.buttonCall}>
+            <Image 
+              source={require('./src/assets/call.png')} 
+              style={styles.iconSmall}
+            />
+            <Text style={[styles.textRed,styles.textBold]}>193</Text>
+          </TouchableOpacity>
+        </View>
+      
+    );
   }
 
+  
+
   return (
-    <View style={styles.containerMain}>
-       <StatusBar animated='animated' style="auto" translucent='false'/>
-      <View style={[styles.flexRow,{marginBottom:75}]}>
-        <Image source={require("./src/assets/Logo400x400.png")} style={styles.logoMain} alt='Logo do Corpo de bombeiros Militar de Mato Grosso' />
-        <Text style={styles.textMain}>
-          Emergências
-        </Text>
-        <Text style={styles.textMain}>
-          193
-        </Text>
-      </View>
-      <Text style={[styles.textBase,{marginBottom:32}]}>
-        Efetue seu Login
-      </Text>
-      <View style={styles.flexRow}>
-        <TouchableOpacity onPress={()=>{}} style={styles.buttonSemiRounded}>
-          <View style={styles.containerIcon}>
-            <Image source={require('./src/assets/iconFacebook.png')}  style={styles.icon}/>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={()=>{}} style={styles.buttonSemiRounded}>
-          <View style={styles.containerIcon}>
-            <Image source={require('./src/assets/iconGoogle.png')}  style={styles.icon}/>
-          </View>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.with80}>
-        <View style={[styles.containerTextTopInput]}>
-          <Text style={styles.textTopInput}>
-            E-mail:
-          </Text>
-        </View>
-        <TextInput
-        style={[styles.input,styles.withFull]}
-          onChangeText={setUserEmail}
-          value={userEmail}
-          placeholder="Inseira seu e-mail"
-          keyboardType="e
-          mail-address"
+    //Inicialização padrão para usar nagevação no aplicativo
+    //Cria as páginas dentro Stack.Navigator
+    //Cada Screen é uma página
+    //initialTouteName é a propriedade que define a página inicial
+    //Se deixar vazio sem a propriedade, renderiza o primeiro Screen
+    <NavigationContainer>
+        <Stack.Navigator 
+          initialRouteName='Login'
+          screenOptions={styles.styleTitlePagesColorRedBgWhite} //Estilo para todas as páginas
+          >
+        <Stack.Screen 
+          name="Login" 
+          component={Login}
+          options={styles.styleTitlePagesColorRedBgWhite} //define estilo para pagina atual
         />
-        <Text style={[{display:errorEmail?'flex':'none'},styles.textTopInput]}>
-          E-mail deve ser no formato: exemplo@gmail.com
-        </Text>
-        <View style={styles.containerTextTopInput}>
-          <Text style={styles.textTopInput}>
-            Senha:
-          </Text>
-        </View>
-        <TextInput
-        style={[styles.input,styles.withFull]}
-          onChangeText={setUserEmail}
-          value={userEmail}
-          placeholder="Inseira seu e-mail"
-          keyboardType="e
-          mail-address"
+        <Stack.Screen 
+          name="Emergências" 
+          component={HomeEmergencias} 
+          options={{headerBackVisible:false}}//Esconde no botão de voltar
+          />
+        <Stack.Screen 
+          name="Registrar-se" 
+          component={Registrarse} 
         />
-        <Text style={[{display:errorPasseord?'flex':'none'},styles.textTopInput]}>
-          Senha deve ao menos ter 8 digitos, uma letra maiúscula, uma minúscula e um caractere especial
-        </Text>
-        <TouchableOpacity onPress={()=>{}} style={[styles.buttonSemiRounded,styles.backgroundRed, styles.withFull,styles.marginTop20]}>
-          <Text style={styles.textoButtonWith}>Acessar</Text>
-        </TouchableOpacity>
-      </View>
-      <Text style={[styles.textTopInput,styles.marginTop20]}>
-        Esqueceu a senha?
-      </Text>
-      <Text style={[styles.textTopInput,styles.marginTop]}>
-        ou
-      </Text>
-      <Text style={[styles.textRed,styles.marginTop]}>
-        Registrar-se
-      </Text>
-      <TouchableOpacity onPress={()=>{}} style={styles.buttonCall}>
-        <Image 
-          source={require('./src/assets/call.png')} 
-          style={styles.iconSmall}
-        />
-        <Text style={[styles.textRed,styles.textBold]}>193</Text>
-      </TouchableOpacity>
-    </View>
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
+  styleTitlePagesColorRedBgWhite:{
+    headerStyle: {
+      backgroundColor: '#fff',
+    },
+    headerTintColor: '#ff0000',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    }
+  },
   containerMain: {
     flex: 1,
     alignItems: 'center',
