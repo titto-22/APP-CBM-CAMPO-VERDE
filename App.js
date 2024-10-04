@@ -3,9 +3,21 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'reac
 import { StatusBar } from 'expo-status-bar'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Dimensions } from 'react-native';
 
 import HomeEmergencias from './src/pages/HomeEmergencias';
 import Registrarse from './src/pages/Registrarse';
+
+/*  _______// Solução para usar rem \\________  */
+const { width, height } = Dimensions.get('window');
+const baseFont =16
+if(height<700){
+  const baseFont =10
+}
+export const rem=(value)=>{
+  return baseFont*value
+}
+
 
 export default function App() {
   const [logado,setLogado]=useState(false)
@@ -13,7 +25,7 @@ export default function App() {
   const [pageCadastro,setpageCadastro]=useState(false)
   const [userEmail, setUserEmail]=useState('')
   const [userPassWord, setUserPassWord]=useState('')
-  const [errorEmail,seterrorEmail]=useState(false)
+  const [errorEmail,seterrorEmail]=useState(true)
   const [errorPasseord,seterrorPasseord]=useState(false)
 
   //Cria navegação
@@ -23,9 +35,12 @@ export default function App() {
   function Login({ navigation }) {
     return (
       <View style={styles.containerMain}>
-          <StatusBar animated='animated' style="auto" translucent='false'/>
-          <View style={[styles.flexRow,{marginBottom:75}]}>
-            <Image source={require("./src/assets/Logo400x400.png")} style={styles.logoMain} alt='Logo do Corpo de bombeiros Militar de Mato Grosso' />
+          <View style={[styles.flexRow]}>
+            <Image 
+              source={require("./src/assets/Logo400x400.png")} 
+              style={styles.logoMain} 
+              alt='Logo do Corpo de bombeiros Militar de Mato Grosso' 
+            />
             <Text style={styles.textMain}>
               Emergências
             </Text>
@@ -33,7 +48,7 @@ export default function App() {
               193
             </Text>
           </View>
-          <Text style={[styles.textBase,{marginBottom:32}]}>
+          <Text style={styles.textBase}>
             Efetue seu Login
           </Text>
           <View style={styles.flexRow}>
@@ -81,26 +96,29 @@ export default function App() {
             <Text style={[{display:errorPasseord?'flex':'none'},styles.textTopInput]}>
               Senha deve ao menos ter 8 digitos, uma letra maiúscula, uma minúscula e um caractere especial
             </Text>
-            <TouchableOpacity onPress={()=>{navigation.navigate('Emergências')}} style={[styles.buttonSemiRounded,styles.backgroundRed, styles.withFull,styles.marginTop20]}>
-              <Text style={styles.textoButtonWith}>
-                Acessar
-              </Text>
-            </TouchableOpacity>
           </View>
+          <TouchableOpacity 
+            onPress={()=>{navigation.navigate('Emergências')}} 
+            style={[styles.buttonSemiRounded,styles.backgroundRed, styles.withFull,styles.with80]}
+          >
+            <Text style={styles.textoButtonWith}>
+              Acessar
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity onPress={()=>{navigation.navigate('Registrar-se')}}>
-            <Text style={[styles.textTopInput,styles.marginTop20]}>
+            <Text style={[styles.textTopInput]}>
               Esqueceu a senha?
             </Text>
           </TouchableOpacity>
-          <Text style={[styles.textTopInput,styles.marginTop]}>
+          <Text style={[styles.textTopInput]}>
             ou
           </Text>
           <TouchableOpacity onPress={()=>{navigation.navigate('Registrar-se',{
             TesteDeParametros:1,
             TesteDeParametrosText:'texto',
             
-          })}}>
-            <Text style={[styles.textRed,styles.marginTop]}>
+          })}} >
+            <Text style={[styles.textRed]}>
               Registrar-se
             </Text>
           </TouchableOpacity>
@@ -115,9 +133,6 @@ export default function App() {
       
     );
   }
-
-  
-
   return (
     //Inicialização padrão para usar nagevação no aplicativo
     //Cria as páginas dentro Stack.Navigator
@@ -161,22 +176,23 @@ export const styles = StyleSheet.create({
   containerMain: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    padding:20,
+    justifyContent: 'space-around',
+    padding:rem(1),
+    backgroundColor:'#fff'
   },
   flexRow:{
     width:'100%',
-    height:80,
+    height:rem(5),
     flexDirection:'row',
     alignItems: 'center',
     justifyContent: 'space-around',
   },
   logoMain:{
-    width:60,
+    width:rem(3.75),
     objectFit: "contain"
   },
   textMain:{
-    fontSize:36,
+    fontSize:rem(1.9),
     fontWeight: 'bold',
     color:'#ff0000'
   },
@@ -184,17 +200,17 @@ export const styles = StyleSheet.create({
     backgroundColor:'#ff0000'
   },
   marginTop20:{
-    marginTop:20
+    marginTop:rem(1.25)
   },
   textBase:{
-    fontSize:26,
+    fontSize:rem(1.25),
     color:'#64748b',
     fontWeight:'bold',
   },
   buttonSemiRounded:{
-    width:10,
-    height:50,
-    borderRadius:'50%',
+    width:rem(0.75),
+    height:rem(3),
+    borderRadius:rem(3),
     alignItems:'center',
     justifyContent:'center',
     shadowColor: "#000",
@@ -206,12 +222,12 @@ export const styles = StyleSheet.create({
     shadowRadius:5
   },
   containerTextTopInput:{
-    marginLeft:10, 
-    padding:5, 
+    marginLeft:rem(0.75), 
+    padding:rem(0.25), 
     transform: [{ translateY: 13 }],
     backgroundColor:'#fff', 
     zIndex:999, 
-    width:60, 
+    width:rem(5), 
     alignItems:'center',
     color: '#94a3b8',
   },
@@ -234,37 +250,39 @@ export const styles = StyleSheet.create({
     borderWidth:1,
     borderColor:'#94a3b8',
     borderRadius:4,
-    padding:10,
+    padding:rem(.75),
   },
   textoButtonWith:{
-    fontSize:16,
+    fontSize:rem(1),
     fontWeight:'bold',
     color:'#fff'
   },
   buttonCall:{
     backgroundColor: '#fff',
     borderWidth:1,
-    marginTop:50,
-    padding:5,
-    borderRadius:'50%',
+    padding:rem(.25),
+    borderRadius:50,
     alignItems:'center',
     justifyContent:'center',
-    width:120
+    width:rem(7.75)
   },
   containerIcon:{
-    padding:10,
+    padding:rem(1.25),
     backgroundColor:'#fff',
-    borderRadius:'100%',
-    width:80,
+    borderRadius:100,
+    width:rem(5),
     alignItems:'center',
     justifyContent:'center'
   },
   icon:{
-    width:40,
-    height:40,
+    width:rem(2.5),
+    height:rem(2.5),
   },
   iconSmall:{
-    width:25,
-    height:25
+    width:rem(1.5),
+    height:rem(1.5),
+  },
+  textLg:{
+    fontSize:rem(1.75),
   }
 });

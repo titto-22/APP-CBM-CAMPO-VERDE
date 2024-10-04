@@ -3,7 +3,10 @@ import { styles } from '../../App';
 
 export default function HomeEmergencias({navigation}){
   return(
-    <View>
+    <View style={styles.containerMain}>
+      <Text style={styles.textLg}>
+        SELECIONE A EMERGÊNICA
+      </Text>
       <TouchableOpacity onPress={()=>{navigation.push('Registrar-se',{
               TesteDeParametros:1,
               TesteDeParametrosText:'texto'}
