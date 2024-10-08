@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'reac
 import { rem } from '../components/function';
 
 
+
 import HomeEmergencias from './HomeEmergencias';
 import Registrarse from './Registrarse';
 
@@ -106,16 +107,13 @@ export default function Login({ navigation }) {
             }
             value={userPassWord}
             placeholder="Inseira sua senha"
-            keyboardType="e
-            mail-address"
-            on
           />
           <Text style={[{display:errorPassword?'flex':'none'},stylesMain.textTopInput]}>
             Senha deve ao menos ter 8 digitos, uma letra maiúscula, uma minúscula e um caractere especial
           </Text>
         </View>
         <TouchableOpacity 
-          onPress={()=>{navigation.navigate('HomeEmergências')}} 
+          onPress={()=>{navigation.navigate('Emergências')}} 
           style={[stylesMain.buttonSemiRounded,stylesMain.backgroundRed, stylesMain.withFull,stylesMain.with80]}
         >
           <Text style={stylesMain.textoButtonWith}>
