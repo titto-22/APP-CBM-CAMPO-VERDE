@@ -128,11 +128,17 @@ export default function Login({ navigation }) {
         <Text style={[stylesMain.textTopInput]}>
           ou
         </Text>
-        <TouchableOpacity onPress={()=>{navigation.navigate('Registrar-se',{
-          TesteDeParametros:1,
-          TesteDeParametrosText:'texto',
-          
-        })}} >
+        <TouchableOpacity 
+          accessibilityLabel="Ir para a tela de registro"
+          onPress={()=>{
+            navigation.navigate(
+              'Registrar-se',{
+                TesteDeParametros:1,
+                TesteDeParametrosText:'texto',
+              }
+            )
+          }
+        }>
           <Text style={[stylesMain.textRed]}>
             Registrar-se
           </Text>
