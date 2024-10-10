@@ -1,4 +1,4 @@
-import { Dimensions } from 'react-native';
+import { Linking, Dimensions } from 'react-native';
 
 
 /*  ------------------------ // Solução para usar rem \\ ------------------------  */
@@ -11,3 +11,8 @@ export const rem=(value)=>{
   }
   return baseFont*value
 }
+
+/*  ------------------------ // Ligação \\ ------------------------  */
+export const handleCall = () => {
+  Linking.openURL(`tel:193`);
+  };

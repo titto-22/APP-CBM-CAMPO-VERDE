@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
-import { rem } from '../components/function';
+import { StyleSheet, Text, View,  TouchableOpacity, TextInput } from 'react-native';
+import { rem, handleCall } from '../components/function';
+import CbmLogo from '../assets/LogoCBM.svg'
+import IconFacebook from '../assets/iconFacebook.svg';
+import IconGoogle from '../assets/iconGoogle.svg';
+import IconCall from '../assets/call.svg';
 
-
-
-import HomeEmergencias from './HomeEmergencias';
-import Registrarse from './Registrarse';
 
 
 export default function Login({ navigation }) {
@@ -17,6 +17,7 @@ export default function Login({ navigation }) {
   const [errorPassword,setErrorPassword]=useState(false)
 
 
+//Valida formato do email
   function validateUserEmail(email){
     //Regex para validar email
     const emailRegex =/^[^\s@]+@[^\s@]+\.(com|com\.br)$/
@@ -28,6 +29,7 @@ export default function Login({ navigation }) {
     setErrorEmail(!isValid);
   }
 
+  //Valida formato da senha
   function validateUserPassword(password){
     const passwordRegex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
     // Verifica se o password corresponde à expressão regular
@@ -39,14 +41,12 @@ export default function Login({ navigation }) {
 
 
 
+
+
   return (
     <View style={stylesMain.containerMain}>
         <View style={[stylesMain.flexRow]}>
-          <Image 
-            source={require("../assets/Logo400x400.png")} 
-            style={stylesMain.logoMain} 
-            alt='Logo do Corpo de bombeiros Militar de Mato Grosso' 
-          />
+          <CbmLogo width={rem(4)} height={rem(4)}/>
           <Text style={stylesMain.textMain}>
             Emergências
           </Text>
@@ -60,12 +60,12 @@ export default function Login({ navigation }) {
         <View style={stylesMain.flexRow}>
           <TouchableOpacity onPress={()=>{}} style={stylesMain.buttonSemiRounded}>
             <View style={stylesMain.containerIcon}>
-              <Image source={require('../assets/iconFacebook.png')}  style={stylesMain.icon}/>
+              <IconFacebook width={rem(2.5)} height={rem(2.5)}/>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={()=>{}} style={stylesMain.buttonSemiRounded}>
             <View style={stylesMain.containerIcon}>
-              <Image source={require('../assets/iconGoogle.png')}  style={stylesMain.icon}/>
+              <IconGoogle width={rem(2.25)} height={rem(2.25)}/>
             </View>
           </TouchableOpacity>
         </View>
@@ -143,12 +143,13 @@ export default function Login({ navigation }) {
             Registrar-se
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>{}} style={stylesMain.buttonCall}>
-          <Image 
-            source={require('../assets/call.png')} 
-            style={stylesMain.iconSmall}
-          />
-          <Text style={[stylesMain.textRed,stylesMain.textBold]}>193</Text>
+        <TouchableOpacity onPress={handleCall} style={stylesMain.buttonCall}>
+          <IconCall width={rem(2.25)} height={rem(2.25)}/>
+          <Text 
+            style={[stylesMain.textRed,stylesMain.textBold]}
+          >
+            193
+          </Text>
         </TouchableOpacity>
       </View>
     
@@ -195,7 +196,7 @@ export const stylesMain = StyleSheet.create({
     marginTop:rem(1.25)
   },
   textBase:{
-    fontSize:rem(1.25),
+    fontSize:rem(1.5),
     color:'#64748b',
     fontWeight:'bold',
   },

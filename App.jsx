@@ -19,7 +19,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        initialRouteName='Login'
+        initialRouteName='Emergências'
         screenOptions={styles.styleTitlePagesColorRedBgWhite}
         drawerContent={(props) => (
           <DrawerContentScrollView {...props}>
@@ -50,6 +50,10 @@ export default function App() {
         <Drawer.Screen 
            name="Dados da Emergência" 
            component={dadosEmergencia} 
+        />
+        <Drawer.Screen 
+          name="Localização" 
+          component={localizacao} 
         />
       </Drawer.Navigator>
     </NavigationContainer>  
