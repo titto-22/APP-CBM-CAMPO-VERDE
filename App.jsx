@@ -9,7 +9,7 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerI
 import Login from './src/pages/Login';
 import HomeEmergencias from './src/pages/HomeEmergencias';
 import Registrarse from './src/pages/Registrarse';
-
+import dadosEmergencia from './src/pages/dadosEmergencia';
 export default function App() {
   
   //Cria navegação
@@ -46,6 +46,10 @@ export default function App() {
         <Drawer.Screen 
            name="Registrar-se" 
            component={Registrarse} 
+        />
+        <Drawer.Screen 
+           name="Dados da Emergência" 
+           component={dadosEmergencia} 
         />
       </Drawer.Navigator>
     </NavigationContainer>  
