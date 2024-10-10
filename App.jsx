@@ -4,12 +4,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import 'react-native-gesture-handler';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 
-
-
 import Login from './src/pages/Login';
 import HomeEmergencias from './src/pages/HomeEmergencias';
 import Registrarse from './src/pages/Registrarse';
-import dadosEmergencia from './src/pages/dadosEmergencia';
+import DadosEmergencia from './src/pages/DadosEmergencia';
+import Localizacao from './src/pages/Localizacao';
+
+
 export default function App() {
   
   //Cria navegação
@@ -49,11 +50,11 @@ export default function App() {
         />
         <Drawer.Screen 
            name="Dados da Emergência" 
-           component={dadosEmergencia} 
+           component={DadosEmergencia} 
         />
         <Drawer.Screen 
           name="Localização" 
-          component={localizacao} 
+          component={Localizacao} 
         />
       </Drawer.Navigator>
     </NavigationContainer>  

@@ -27,5 +27,8 @@ https://docs.expo.dev/versions/latest/sdk/svg/
 
 `yarn add --dev react-native-svg-transformer -D` 
 
+#### Biblioteca para localização
+
+`npm install @react-native-community/geolocation --save`
 
 
