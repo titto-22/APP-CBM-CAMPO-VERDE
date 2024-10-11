@@ -3,10 +3,13 @@ import { useState, useEffect, useRef } from 'react';
 import {requestForegroundPermissionsAsync, getCurrentPositionAsync, watchPositionAsync, LocationAccuracy} from 'expo-location'
 import MapView, {Marker} from 'react-native-maps'
 import { rem } from '../components/function';
+import IconMap from '../assets/map-pin-line-bold.svg';
 
 
 
-export default function Localizacao({navigation}) {
+export default function Localizacao({route,navigation}) {
+  //Tipo de emergência
+  const tipoEmergencia = route.params;
   //variável onde será armazenado a localização
   const [location, setLocation]=useState(null)
 
@@ -73,20 +76,43 @@ export default function Localizacao({navigation}) {
         </MapView>
       }
       <View style={styleLocation.flexAround}>
-        <TouchableOpacity style={styleLocation.Button} onPress={
-          ()=>{
-            navigation.navigate(
-              'Dados da Emergência',{
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude
-              }
-            )
-          }
-        }>
-          <Text style={styleLocation.textButton}>
-            CONFIRMAR
+        <View style={styleLocation.flexRow}>
+          <Text style={styleLocation.textBase}>
+            Confirma a sua localização?
           </Text>
-        </TouchableOpacity>
+          <IconMap height={rem(1)} width={rem(1)}/>
+        </View>
+        <View style={styleLocation.flexRow}>
+          <TouchableOpacity style={styleLocation.Button} onPress={
+            ()=>{
+              navigation.navigate(
+                'Dados da Emergência',{
+                  latitude: 'false',
+                  longitude: 'false',
+                  tipoEmergencia: tipoEmergencia.tipoEmergencia
+                }
+              )
+            }
+          }>
+            <Text style={styleLocation.textButton}>
+              Não
+            </Text>
+          </TouchableOpacity><TouchableOpacity style={styleLocation.Button} onPress={
+            ()=>{
+              navigation.navigate(
+                'Dados da Emergência',{
+                  latitude: location.coords.latitude,
+                  longitude: location.coords.longitude,
+                  tipoEmergencia: tipoEmergencia.tipoEmergencia
+                }
+              )
+            }
+          }>
+            <Text style={styleLocation.textButton}>
+              Sim
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   )
@@ -104,14 +130,13 @@ const styleLocation= StyleSheet.create({
     width:'100%'
   },
   Button:{
-    width:'70%',
+    width:'35%',
     alignItems:'center',
     justifyContent:'center',
     backgroundColor:"#5fa4f8",
-    padding:rem(1),
+    padding:rem(.5),
     borderRadius:12,
-    marginTop:rem(.75),
-    marginBottom:rem(1)
+    marginHorizontal:rem(1),
   },
   flexAround:{
     alignItems:'center',
@@ -120,6 +145,17 @@ const styleLocation= StyleSheet.create({
     width:'100%'
   },
   textButton:{
-    color:'#fff'
+    color:'#fff',
+    fontSize:rem(1.25),
+    fontWeight:'bold'
+  },
+  flexRow:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center' 
+  },
+  textBase:{
+    fontSize:rem(1.25),
+    marginRight:rem(.5)
   }
 })

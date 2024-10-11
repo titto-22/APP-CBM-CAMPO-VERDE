@@ -2,7 +2,7 @@ import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { stylesMain } from '../pages/Login';
 
-import IconFire from '../assets/fire.svg';
+import IconFire from '../assets/fire.svg'
 import IconCall from '../assets/call.svg';
 import IconParadaRespiratoria from '../assets/Vector.svg';
 import IconEngasgamento from '../assets/engasgo.svg';
@@ -25,7 +25,7 @@ export default function HomeEmergencias({navigation}){
           onPress={
             ()=>{
               navigation.navigate(
-                'Dados da Emergência',{
+                'Localização',{
                   tipoEmergencia:'Incêndio'
                 }
               )
@@ -44,7 +44,7 @@ export default function HomeEmergencias({navigation}){
           onPress={
             ()=>{
               navigation.navigate(
-                'Dados da Emergência',{
+                'Localização',{
                   tipoEmergencia:'Parada Respiratória'
                 }
               )
@@ -63,7 +63,7 @@ export default function HomeEmergencias({navigation}){
           onPress={
             ()=>{
               navigation.navigate(
-                'Dados da Emergência',{
+                'Localização',{
                   tipoEmergencia:'Engasgamento'
                 }
               )
@@ -82,7 +82,7 @@ export default function HomeEmergencias({navigation}){
           onPress={
             ()=>{
               navigation.navigate(
-                'Dados da Emergência',{
+                'Localização',{
                   tipoEmergencia:'Afogamento'
                 }
               )
@@ -101,7 +101,7 @@ export default function HomeEmergencias({navigation}){
           onPress={
             ()=>{
               navigation.navigate(
-                'Dados da Emergência',{
+                'Localização',{
                   tipoEmergencia:'Atropelamento'
                 }
               )
@@ -120,7 +120,7 @@ export default function HomeEmergencias({navigation}){
           onPress={
             ()=>{
               navigation.navigate(
-                'Dados da Emergência',{
+                'Localização',{
                   tipoEmergencia:'Acidente de Trânsito'
                 }
               )

@@ -13,9 +13,14 @@
     },
     "packagerOpts": {
       "config": "metro.config.js",
-      "sourceExts": ["js","jsx","ts","tsx","svg"]
+      "sourceExts": [
+        "js",
+        "jsx",
+        "ts",
+        "tsx",
+        "svg"
+      ]
     },
-    
     "ios": {
       "supportsTablet": true
     },
@@ -27,6 +32,14 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-secure-store",
+        {
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
+        }
+      ]
+    ]
   }
 }

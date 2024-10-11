@@ -10,7 +10,7 @@ import IconCall from '../assets/call.svg';
 
 export default function Login({ navigation }) {
 
-  const [logado,setLogado]=useState (false)
+
   const [userEmail, setUserEmail]=useState('')
   const [userPassWord, setUserPassWord]=useState('')
   const [errorEmail,setErrorEmail]=useState(false)
@@ -39,7 +39,10 @@ export default function Login({ navigation }) {
     setErrorPassword(!isValid);
   }
 
+  function handleLogin(){
 
+    setIsSignedIn(true)
+  }
 
 
 

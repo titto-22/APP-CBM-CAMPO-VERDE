@@ -1,4 +1,5 @@
- import { StyleSheet, Linking } from 'react-native';
+import { useState } from 'react'; 
+import { StyleSheet, Linking } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import 'react-native-gesture-handler';
@@ -11,8 +12,14 @@ import dadosEmergencia from './src/pages/dadosEmergencia';
 import Localizacao from './src/pages/localizacao';
 
 
+
+
 export default function App() {
   
+  
+  //Controle de Login  
+  const [isSignedIn, setIsSignedIn] = useState(false)
+
   //Cria navegação
   const Drawer = createDrawerNavigator();
   //const Stack = createNativeStackNavigator();
@@ -20,7 +27,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        initialRouteName='Localização'
+        //initialRouteName='Login'
         screenOptions={styles.styleTitlePagesColorRedBgWhite}
         drawerContent={(props) => (
           <DrawerContentScrollView {...props}>
@@ -34,28 +41,38 @@ export default function App() {
           </DrawerContentScrollView>
             )}
       > 
-        <Drawer.Screen 
-          name="Login" 
-          component={Login}
-          options={{ gestureEnabled: false }}
-        />
-        <Drawer.Screen 
-          name="Emergências" 
-          component={HomeEmergencias} 
-          options={{headerBackVisible:false}}
-        />
-        <Drawer.Screen 
-           name="Registrar-se" 
-           component={Registrarse} 
-        />
-        <Drawer.Screen 
-           name="Dados da Emergência" 
-           component={dadosEmergencia} 
-        />
-        <Drawer.Screen 
-          name="Localização" 
-          component={Localizacao} 
-        />
+        {isSignedIn?(
+          <>
+            <Drawer.Screen 
+              name="Emergências" 
+              component={HomeEmergencias} 
+              options={{headerBackVisible:false}}
+
+            />
+            <Drawer.Screen 
+              name="Localização" 
+              component={Localizacao} 
+            />
+            <Drawer.Screen 
+              name="Dados da Emergência" 
+              component={dadosEmergencia} 
+
+            />
+          </>
+        ) : (
+          <>
+            <Drawer.Screen 
+              name="Login" 
+              component={Login}
+              options={{ gestureEnabled: false }}
+            />
+            <Drawer.Screen 
+              name="Registrar-se" 
+              component={Registrarse} 
+            />
+          </>
+        )
+      }
       </Drawer.Navigator>
     </NavigationContainer>  
 
