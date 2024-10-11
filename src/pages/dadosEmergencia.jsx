@@ -1,12 +1,11 @@
 import {Text, View, TouchableOpacity } from 'react-native';
-import { styles } from '../../App';
 
-export default function DadosEmergencia({route, navigation}){
+export default function dadosEmergencia({route, navigation}){
   const teste = route.params;
   return(
     <View>
-      <Text>teste: {JSON.stringify(teste.tipoEmergencia)}</Text>
-     
+      <Text>teste: {JSON.stringify(teste.latitude)}</Text>
+      <Text>teste: {JSON.stringify(teste.longitude)}</Text>
     </View>
   )
 }

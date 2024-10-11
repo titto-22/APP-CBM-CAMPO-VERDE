@@ -1,15 +1,20 @@
-import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { rem, handleCall } from '../components/function';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+
+import { stylesMain } from '../pages/Login';
+
 import IconFire from '../assets/fire.svg';
 import IconCall from '../assets/call.svg';
 import IconParadaRespiratoria from '../assets/Vector.svg';
-import { stylesMain } from '../pages/Login';
 import IconEngasgamento from '../assets/engasgo.svg';
 import IconAfogamento from '../assets/afogamento.svg';
 import IconAtropelamento from '../assets/atropelamento.svg';
 import IconAcidente from '../assets/acidente.svg';
 
+import { rem, handleCall } from '../components/function';
+
 export default function HomeEmergencias({navigation}){
+
+  
   return(
     <View style={stylesHome.containerMain}>
       <Text style={stylesHome.textTitle}>

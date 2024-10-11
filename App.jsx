@@ -7,8 +7,8 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerI
 import Login from './src/pages/Login';
 import HomeEmergencias from './src/pages/HomeEmergencias';
 import Registrarse from './src/pages/Registrarse';
-import DadosEmergencia from './src/pages/DadosEmergencia';
-import Localizacao from './src/pages/Localizacao';
+import dadosEmergencia from './src/pages/dadosEmergencia';
+import Localizacao from './src/pages/localizacao';
 
 
 export default function App() {
@@ -20,7 +20,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        initialRouteName='Emergências'
+        initialRouteName='Localização'
         screenOptions={styles.styleTitlePagesColorRedBgWhite}
         drawerContent={(props) => (
           <DrawerContentScrollView {...props}>
@@ -50,7 +50,7 @@ export default function App() {
         />
         <Drawer.Screen 
            name="Dados da Emergência" 
-           component={DadosEmergencia} 
+           component={dadosEmergencia} 
         />
         <Drawer.Screen 
           name="Localização" 

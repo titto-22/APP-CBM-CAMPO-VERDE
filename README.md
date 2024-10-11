@@ -31,4 +31,6 @@ https://docs.expo.dev/versions/latest/sdk/svg/
 
 `npm install @react-native-community/geolocation --save`
 
+https://www.youtube.com/watch?v=7DY1tHHudtM
+
 
