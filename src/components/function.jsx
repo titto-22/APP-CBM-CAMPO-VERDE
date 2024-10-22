@@ -13,5 +13,13 @@ export const rem=(value)=>{
 
 /*  ------------------------ // Ligação \\ ------------------------  */
 export const handleCall = () => {
-  Linking.openURL(`tel:193`);
+  Linking.openURL("tel:193");
   };
+
+  export const createLoginInSecureStore=()=>{
+    
+  }
+  
+  export const validatesIfUserIsLogged =()=>{
+
+  }

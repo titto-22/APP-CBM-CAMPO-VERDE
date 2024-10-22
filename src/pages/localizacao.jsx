@@ -87,8 +87,8 @@ export default function Localizacao({route,navigation}) {
             ()=>{
               navigation.navigate(
                 'Dados da Emergência',{
-                  latitude: 'false',
-                  longitude: 'false',
+                  latitude: false,
+                  longitude: false,
                   tipoEmergencia: tipoEmergencia.tipoEmergencia
                 }
               )

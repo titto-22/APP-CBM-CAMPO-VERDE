@@ -1,3 +1,5 @@
+import * as React from 'react';
+import * as SecureStore from 'expo-secure-store'; //Usa para armazenar informação seguras (login) localmente
 import { useState } from 'react'; 
 import { StyleSheet, Linking } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -11,19 +13,79 @@ import Registrarse from './src/pages/Registrarse';
 import dadosEmergencia from './src/pages/dadosEmergencia';
 import Localizacao from './src/pages/localizacao';
 
+const AuthContext = React.createContext();
 
 
+export default function App({navigation}) {
+  const [state,dispatch]=React.useReducer(
+    (prevState, action) => {
+      switch (action.type) {
+        case 'RESTORE_TOKEN':
+          return {
+            ...prevState,
+            userToken: action.token,
+            isLoading: false,
+          };
+        case 'SIGN_IN':
+          return {
+            ...prevState,
+            isSignout: false,
+            userToken: action.token,
+          };
+        case 'SIGN_OUT':
+          return {
+            ...prevState,
+            isSignout: true,
+            userToken: null,
+          };
+      }
+    },
+    {
+      isLoading: true,
+      isSignout: false,
+      userToken: null,
+    }
+  )
 
-export default function App() {
-  
+  React.useEffect(() => {
+    const bootstrapAsync = async () => {
+      let userToken;
+
+      try {
+        userToken = await SecureStore.getItemAsync('userToken');
+      } catch (e) {
+      }
+      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+    };
+    bootstrapAsync();
+  }, []);
+
+  const authContext = React.useMemo(
+    () => ({
+      signIn: async (data) => {
+        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+      },
+      signOut: () => dispatch({ type: 'SIGN_OUT' }),
+      signUp: async (data) => {
+
+        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+      },
+    }),
+    []
+  );
+
   
   //Controle de Login  
-  const [isSignedIn, setIsSignedIn] = useState(false)
+  const [isSignedIn, setIsSignedIn] = useState(true)
 
   //Cria navegação
   const Drawer = createDrawerNavigator();
   //const Stack = createNativeStackNavigator();
 
+  if (state.isLoading) {
+    // Verificando login
+    return <SplashScreen />;
+  }
   return (
     <NavigationContainer>
       <Drawer.Navigator
