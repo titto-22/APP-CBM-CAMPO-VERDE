@@ -76,15 +76,36 @@ export default function App({navigation}) {
 
   
   //Controle de Login  
-  const [isSignedIn, setIsSignedIn] = useState(true)
+  const [isSignedIn, setIsSignedIn] = useState(false)
 
   //Cria navegação
   const Drawer = createDrawerNavigator();
   //const Stack = createNativeStackNavigator();
 
-  if (state.isLoading) {
+ /* if (state.isLoading) {
     // Verificando login
     return <SplashScreen />;
+  }
+    */
+
+  async function salveUserLogin(){
+    await SecureStore.setItemAsync('appCBMUser','admin')
+    Alert.alert('Salvo','Salvo login com sucesso!')
+  }
+
+  async function getUserLogin() {
+    const result = await SecureStore.getItemAsync('appCBMUser')
+    if(result){
+      Alert.alert('Recuperado', `O valor armazenado no login é:\n ${result}` )
+
+    } else{
+      Alert.alert('Erro ao recuperar', 'Sem valor armazenado')
+    }
+  }
+
+  async function removeUserLogin(params) {
+    await SecureStore.deleteItemAsync('appCBMUser')
+      Alert.alert('Apagado',`Apagado o Login:\n ${result}` )
   }
   return (
     <NavigationContainer>

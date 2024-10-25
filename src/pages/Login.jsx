@@ -1,12 +1,32 @@
 import { useState } from 'react';
-import { StyleSheet, Text, View,  TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View,  TouchableOpacity, TextInput, Alert } from 'react-native';
 import { rem, handleCall } from '../components/function';
 import CbmLogo from '../assets/LogoCBM.svg'
 import IconFacebook from '../assets/iconFacebook.svg';
 import IconGoogle from '../assets/iconGoogle.svg';
 import IconCall from '../assets/call.svg';
 
+import * as SecureStore from 'expo-secure-store'; //Usa para armazenar informação seguras (login) localmente
 
+async function salveUserLogin(){
+  await SecureStore.setItemAsync('appCBMUser','admin')
+  Alert.alert('Salvo','Salvo login com sucesso!')
+}
+
+async function getUserLogin() {
+  const result = await SecureStore.getItemAsync('appCBMUser')
+  if(result){
+    Alert.alert('Recuperado', `O valor armazenado no login é:\n ${result}` )
+
+  } else{
+    Alert.alert('Erro ao recuperar', 'Sem valor armazenado')
+  }
+}
+
+async function removeUserLogin(params) {
+  await SecureStore.deleteItemAsync('appCBMUser')
+    Alert.alert('Apagado','Apagado o Login' )
+}
 
 export default function Login({ navigation }) {
 
@@ -116,14 +136,14 @@ export default function Login({ navigation }) {
           </Text>
         </View>
         <TouchableOpacity 
-          onPress={()=>{navigation.navigate('Emergências')}} 
+          onPress={()=>{salveUserLogin()}} 
           style={[stylesMain.buttonSemiRounded,stylesMain.backgroundRed, stylesMain.withFull,stylesMain.with80]}
         >
           <Text style={stylesMain.textoButtonWith}>
             Acessar
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>{navigation.navigate('Registrar-se')}}>
+        <TouchableOpacity onPress={()=>{getUserLogin()}}>
           <Text style={[stylesMain.textTopInput]}>
             Esqueceu a senha?
           </Text>
@@ -134,12 +154,7 @@ export default function Login({ navigation }) {
         <TouchableOpacity 
           accessibilityLabel="Ir para a tela de registro"
           onPress={()=>{
-            navigation.navigate(
-              'Registrar-se',{
-                TesteDeParametros:1,
-                TesteDeParametrosText:'texto',
-              }
-            )
+            removeUserLogin()
           }
         }>
           <Text style={[stylesMain.textRed]}>
