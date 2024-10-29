@@ -6,26 +6,13 @@ import IconFacebook from '../assets/iconFacebook.svg';
 import IconGoogle from '../assets/iconGoogle.svg';
 import IconCall from '../assets/call.svg';
 
-import * as SecureStore from 'expo-secure-store'; //Usa para armazenar informação seguras (login) localmente
+import { getLocalUser } from '../components/function'
 
-async function salveUserLogin(){
-  await SecureStore.setItemAsync('appCBMUser','admin')
-  Alert.alert('Salvo','Salvo login com sucesso!')
-}
-
-async function getUserLogin() {
-  const result = await SecureStore.getItemAsync('appCBMUser')
-  if(result){
-    Alert.alert('Recuperado', `O valor armazenado no login é:\n ${result}` )
-
-  } else{
-    Alert.alert('Erro ao recuperar', 'Sem valor armazenado')
-  }
-}
-
-async function removeUserLogin(params) {
-  await SecureStore.deleteItemAsync('appCBMUser')
-    Alert.alert('Apagado','Apagado o Login' )
+function teste(){
+  const result=getLocalUser()
+  console.log(result.appCbmUser)
+  typeof result
+  //Alert.alert('alerta',result)
 }
 
 export default function Login({ navigation }) {
@@ -33,37 +20,7 @@ export default function Login({ navigation }) {
 
   const [userEmail, setUserEmail]=useState('')
   const [userPassWord, setUserPassWord]=useState('')
-  const [errorEmail,setErrorEmail]=useState(false)
-  const [errorPassword,setErrorPassword]=useState(false)
-
-
-//Valida formato do email
-  function validateUserEmail(email){
-    //Regex para validar email
-    const emailRegex =/^[^\s@]+@[^\s@]+\.(com|com\.br)$/
-
-    // Verifica se o email corresponde à expressão regular
-    const isValid = emailRegex.test(email);
-
-    // Seta o estado de acordo com a validação
-    setErrorEmail(!isValid);
-  }
-
-  //Valida formato da senha
-  function validateUserPassword(password){
-    const passwordRegex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-    // Verifica se o password corresponde à expressão regular
-    const isValid = passwordRegex.test(password);
-
-    // Seta o estado de acordo com a validação
-    setErrorPassword(!isValid);
-  }
-
-  function handleLogin(){
-
-    setIsSignedIn(true)
-  }
-
+  const [errorLogin,setErrorLogin]=useState(false)
 
 
   return (
@@ -112,9 +69,7 @@ export default function Login({ navigation }) {
             mail-address"
 
           />
-          <Text style={[{display:errorEmail?'flex':'none'},stylesMain.textTopInput]}>
-            E-mail deve ser no formato: exemplo@gmail.com
-          </Text>
+          
           <View style={stylesMain.containerTextTopInput}>
             <Text style={stylesMain.textTopInput}>
               Senha:
@@ -131,12 +86,12 @@ export default function Login({ navigation }) {
             value={userPassWord}
             placeholder="Inseira sua senha"
           />
-          <Text style={[{display:errorPassword?'flex':'none'},stylesMain.textTopInput]}>
-            Senha deve ao menos ter 8 digitos, uma letra maiúscula, uma minúscula e um caractere especial
+          <Text style={[{display:errorLogin?'flex':'none'},stylesMain.textRed]}>
+            Erro ao efetuar lofgin, confira o e-mail e senha.
           </Text>
         </View>
         <TouchableOpacity 
-          onPress={()=>{salveUserLogin()}} 
+          onPress={()=>{teste()}} 
           style={[stylesMain.buttonSemiRounded,stylesMain.backgroundRed, stylesMain.withFull,stylesMain.with80]}
         >
           <Text style={stylesMain.textoButtonWith}>

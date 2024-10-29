@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as SecureStore from 'expo-secure-store'; //Usa para armazenar informação seguras (login) localmente
 import { useState } from 'react'; 
-import { StyleSheet, Linking } from 'react-native';
+import { StyleSheet, Linking, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import 'react-native-gesture-handler';
@@ -12,101 +12,47 @@ import HomeEmergencias from './src/pages/HomeEmergencias';
 import Registrarse from './src/pages/Registrarse';
 import dadosEmergencia from './src/pages/dadosEmergencia';
 import Localizacao from './src/pages/localizacao';
+import {  createLoginInSecureStoreTest, getLocalName, getLocalUser, getLocalPassword, getLocalExpirationDate } from './src/components/function'
 
 const AuthContext = React.createContext();
 
+//Cria usuário para teste, tem que excluir depois
+createLoginInSecureStoreTest()
 
 export default function App({navigation}) {
-  const [state,dispatch]=React.useReducer(
-    (prevState, action) => {
-      switch (action.type) {
-        case 'RESTORE_TOKEN':
-          return {
-            ...prevState,
-            userToken: action.token,
-            isLoading: false,
-          };
-        case 'SIGN_IN':
-          return {
-            ...prevState,
-            isSignout: false,
-            userToken: action.token,
-          };
-        case 'SIGN_OUT':
-          return {
-            ...prevState,
-            isSignout: true,
-            userToken: null,
-          };
-      }
-    },
-    {
-      isLoading: true,
-      isSignout: false,
-      userToken: null,
-    }
-  )
-
-  React.useEffect(() => {
-    const bootstrapAsync = async () => {
-      let userToken;
-
-      try {
-        userToken = await SecureStore.getItemAsync('userToken');
-      } catch (e) {
-      }
-      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
-    };
-    bootstrapAsync();
-  }, []);
-
-  const authContext = React.useMemo(
-    () => ({
-      signIn: async (data) => {
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
-      },
-      signOut: () => dispatch({ type: 'SIGN_OUT' }),
-      signUp: async (data) => {
-
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
-      },
-    }),
-    []
-  );
-
   
-  //Controle de Login  
-  const [isSignedIn, setIsSignedIn] = useState(false)
+  //Função que inicia os serviços de validação de usuário
+  //recupera o valor e verifica se faz mais de 30dias do último login
+  async function InitialService() {
 
+    const getValidation =  await getLocalExpirationDate()
+    const validation = new Date(getValidation)
+    const dateNow = new Date()
+    const differenceMilliseconds=dateNow-validation
+    console.log(differenceMilliseconds)
+    const differenceInDay= Math.floor(differenceMilliseconds / (1000 * 60 * 60 * 24));
+    console.log(differenceInDay)
+     
+    if(differenceInDay<30){
+      setIsSignedIn(true)
+    }
+    
+  }
+
+  //Inicia a validação
+  InitialService()
+
+  //Const que controla se esta logado ou não
+  const [isSignedIn, setIsSignedIn] = useState(false)
+  
+  
+  
   //Cria navegação
   const Drawer = createDrawerNavigator();
   //const Stack = createNativeStackNavigator();
 
- /* if (state.isLoading) {
-    // Verificando login
-    return <SplashScreen />;
-  }
-    */
 
-  async function salveUserLogin(){
-    await SecureStore.setItemAsync('appCBMUser','admin')
-    Alert.alert('Salvo','Salvo login com sucesso!')
-  }
 
-  async function getUserLogin() {
-    const result = await SecureStore.getItemAsync('appCBMUser')
-    if(result){
-      Alert.alert('Recuperado', `O valor armazenado no login é:\n ${result}` )
-
-    } else{
-      Alert.alert('Erro ao recuperar', 'Sem valor armazenado')
-    }
-  }
-
-  async function removeUserLogin(params) {
-    await SecureStore.deleteItemAsync('appCBMUser')
-      Alert.alert('Apagado',`Apagado o Login:\n ${result}` )
-  }
   return (
     <NavigationContainer>
       <Drawer.Navigator
@@ -189,6 +135,8 @@ export default function App({navigation}) {
     */
     )
 }
+
+
 
 export const styles = StyleSheet.create({
   styleTitlePagesColorRedBgWhite:{
