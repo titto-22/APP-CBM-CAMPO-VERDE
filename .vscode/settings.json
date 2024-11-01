@@ -2,5 +2,16 @@
   "totvsLanguageServer.welcomePage": false,
   "cSpell.words": [
     "Drawer"
+  ],
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5433,
+      "driver": "PostgreSQL",
+      "name": "App193",
+      "database": "postgres",
+      "username": "postgres"
+    }
   ]
 }
