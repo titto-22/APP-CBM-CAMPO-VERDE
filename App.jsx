@@ -14,26 +14,32 @@ import dadosEmergencia from './src/pages/dadosEmergencia';
 import Localizacao from './src/pages/localizacao';
 import {  createLoginInSecureStoreTest, getLocalName, getLocalUser, getLocalPassword, getLocalExpirationDate } from './src/components/function'
 
-const AuthContext = React.createContext();
+//Validade do login/token armazenado localmente
+const validationTokenLogin=30
 
-//Cria usuário para teste, tem que excluir depois
+//Cria usuário para teste, tem que excluir depois quando for para produção
 createLoginInSecureStoreTest()
 
 export default function App({navigation}) {
   
   //Função que inicia os serviços de validação de usuário
-  //recupera o valor e verifica se faz mais de 30dias do último login
+  //recupera o valor e verifica se faz mais de 30 dias do último login
   async function InitialService() {
 
+    //recupera a data de expiração do login/token
     const getValidation =  await getLocalExpirationDate()
+    //formata como data
     const validation = new Date(getValidation)
+    //cria variável da data atual
     const dateNow = new Date()
+    //Verifica a diferença em milesegundos
     const differenceMilliseconds=dateNow-validation
-    console.log(differenceMilliseconds)
+    //Converte em dias
     const differenceInDay= Math.floor(differenceMilliseconds / (1000 * 60 * 60 * 24));
-    console.log(differenceInDay)
-     
-    if(differenceInDay<30){
+    
+    //Caso  não tenha expirado 
+    // Validade de 30 dias
+    if(differenceInDay<validationTokenLogin){
       setIsSignedIn(true)
     }
     
@@ -42,16 +48,12 @@ export default function App({navigation}) {
   //Inicia a validação
   InitialService()
 
-  //Const que controla se esta logado ou não
+  //Variável que controla se esta logado ou não
   const [isSignedIn, setIsSignedIn] = useState(false)
-  
-  
-  
+    
   //Cria navegação
   const Drawer = createDrawerNavigator();
   //const Stack = createNativeStackNavigator();
-
-
 
   return (
     <NavigationContainer>

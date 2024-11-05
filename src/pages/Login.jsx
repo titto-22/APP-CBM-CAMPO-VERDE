@@ -6,21 +6,33 @@ import IconFacebook from '../assets/iconFacebook.svg';
 import IconGoogle from '../assets/iconGoogle.svg';
 import IconCall from '../assets/call.svg';
 
-import { getLocalUser } from '../components/function'
+import { getLocalUser, getLocalLogin, getLocalPassword, salveLocalExpirationDate } from '../components/function'
 
-function teste(){
-  const result=getLocalUser()
-  console.log(result.appCbmUser)
+//Function teste retirar quando for para produção
+async function teste(){
+ 
+  const result=await getLocalUser()
+  console.log(result)
   typeof result
   //Alert.alert('alerta',result)
 }
 
 export default function Login({ navigation }) {
 
-
   const [userEmail, setUserEmail]=useState('')
   const [userPassWord, setUserPassWord]=useState('')
   const [errorLogin,setErrorLogin]=useState(false)
+
+  async function verificaLogin(){
+    const user = await getLocalUser()
+    const password = await getLocalPassword()
+    //Verificase usuário admin
+    if(user==='admin' && password==='123456789Az!'){
+      newDate=new Date().toISOString
+      salveLocalExpirationDate(newDate)
+      
+    }
+  }
 
 
   return (
@@ -91,7 +103,7 @@ export default function Login({ navigation }) {
           </Text>
         </View>
         <TouchableOpacity 
-          onPress={()=>{teste()}} 
+          onPress={()=>{verificaLogin()}} 
           style={[stylesMain.buttonSemiRounded,stylesMain.backgroundRed, stylesMain.withFull,stylesMain.with80]}
         >
           <Text style={stylesMain.textoButtonWith}>
