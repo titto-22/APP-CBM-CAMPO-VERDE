@@ -6,18 +6,18 @@ import IconFacebook from '../assets/iconFacebook.svg';
 import IconGoogle from '../assets/iconGoogle.svg';
 import IconCall from '../assets/call.svg';
 
+import React, { useContext } from '../../node_modules/react';
+import { AuthContext } from '../../App';
+
 import { getLocalUser, getLocalLogin, getLocalPassword, salveLocalExpirationDate } from '../components/function'
 
-//Function teste retirar quando for para produção
-async function teste(){
- 
-  const result=await getLocalUser()
-  console.log(result)
-  typeof result
-  //Alert.alert('alerta',result)
-}
 
 export default function Login({ navigation }) {
+  const { isSignedIn, setIsSignedIn } = useContext(AuthContext);
+  const handleLogin = () => {
+    setIsSignedIn(true); // Atualiza o estado de login
+  };
+
 
   const [userEmail, setUserEmail]=useState('')
   const [userPassWord, setUserPassWord]=useState('')
@@ -30,7 +30,7 @@ export default function Login({ navigation }) {
     if(user==='admin' && password==='123456789Az!'){
       newDate=new Date().toISOString
       salveLocalExpirationDate(newDate)
-      
+      handleLogin()
     }
   }
 

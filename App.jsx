@@ -1,6 +1,6 @@
 import * as React from 'react';
+import  { createContext, useState, useEffect } from 'react';
 import * as SecureStore from 'expo-secure-store'; //Usa para armazenar informação seguras (login) localmente
-import { useState } from 'react'; 
 import { StyleSheet, Linking, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -14,6 +14,12 @@ import dadosEmergencia from './src/pages/dadosEmergencia';
 import Localizacao from './src/pages/localizacao';
 import {  createLoginInSecureStoreTest, getLocalName, getLocalUser, getLocalPassword, getLocalExpirationDate } from './src/components/function'
 
+
+export const AuthContext = createContext({
+  isSignedIn: false,
+  setIsSignedIn: () => {},
+});
+
 //Validade do login/token armazenado localmente
 const validationTokenLogin=30
 
@@ -21,6 +27,9 @@ const validationTokenLogin=30
 createLoginInSecureStoreTest()
 
 export default function App({navigation}) {
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  const handleSetIsSignedIn = (value) => setIsSignedIn(value);
   
   //Função que inicia os serviços de validação de usuário
   //recupera o valor e verifica se faz mais de 30 dias do último login
@@ -46,67 +55,71 @@ export default function App({navigation}) {
   }
 
   //Inicia a validação
-  InitialService()
+  useEffect(() => {
+    InitialService();
+  }, []);
 
   //Variável que controla se esta logado ou não
-  const [isSignedIn, setIsSignedIn] = useState(false)
+ // const [isSignedIn, setIsSignedIn] = useState(false)
     
   //Cria navegação
   const Drawer = createDrawerNavigator();
   //const Stack = createNativeStackNavigator();
 
   return (
-    <NavigationContainer>
-      <Drawer.Navigator
-        //initialRouteName='Login'
-        screenOptions={styles.styleTitlePagesColorRedBgWhite}
-        drawerContent={(props) => (
-          <DrawerContentScrollView {...props}>
-            <DrawerItemList {...props} />
-            <DrawerItem
-              label="Ajuda"
-              onPress={() => Linking.openURL('https://www.youtube.com')}
-              activeTintColor='#fff'
-              inactiveTintColor='#e7e7e7'
-            />
-          </DrawerContentScrollView>
-            )}
-      > 
-        {isSignedIn?(
-          <>
-            <Drawer.Screen 
-              name="Emergências" 
-              component={HomeEmergencias} 
-              options={{headerBackVisible:false}}
+    <AuthContext.Provider value={{ isSignedIn, setIsSignedIn: handleSetIsSignedIn }}>
+      
+      <NavigationContainer>
+        <Drawer.Navigator
+          //initialRouteName='Login'
+          screenOptions={styles.styleTitlePagesColorRedBgWhite}
+          drawerContent={(props) => (
+            <DrawerContentScrollView {...props}>
+              <DrawerItemList {...props} />
+              <DrawerItem
+                label="Ajuda"
+                onPress={() => Linking.openURL('https://www.youtube.com')}
+                activeTintColor='#fff'
+                inactiveTintColor='#e7e7e7'
+              />
+            </DrawerContentScrollView>
+              )}
+        > 
+          {isSignedIn?(
+            <>
+              <Drawer.Screen 
+                name="Emergências" 
+                component={HomeEmergencias} 
+                options={{headerBackVisible:false}}
 
-            />
-            <Drawer.Screen 
-              name="Localização" 
-              component={Localizacao} 
-            />
-            <Drawer.Screen 
-              name="Dados da Emergência" 
-              component={dadosEmergencia} 
+              />
+              <Drawer.Screen 
+                name="Localização" 
+                component={Localizacao} 
+              />
+              <Drawer.Screen 
+                name="Dados da Emergência" 
+                component={dadosEmergencia} 
 
-            />
-          </>
-        ) : (
-          <>
-            <Drawer.Screen 
-              name="Login" 
-              component={Login}
-              options={{ gestureEnabled: false }}
-            />
-            <Drawer.Screen 
-              name="Registrar-se" 
-              component={Registrarse} 
-            />
-          </>
-        )
-      }
-      </Drawer.Navigator>
-    </NavigationContainer>  
-
+              />
+            </>
+          ) : (
+            <>
+              <Drawer.Screen 
+                name="Login" 
+                component={Login}
+                options={{ gestureEnabled: false }}
+              />
+              <Drawer.Screen 
+                name="Registrar-se" 
+                component={Registrarse} 
+              />
+            </>
+          )
+        }
+        </Drawer.Navigator>
+      </NavigationContainer>  
+  </AuthContext.Provider>
     /*
     //Inicialização padrão para usar nagevação no aplicativo
     //Cria as páginas dentro Stack.Navigator
