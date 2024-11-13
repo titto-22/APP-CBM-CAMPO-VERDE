@@ -14,7 +14,7 @@ import dadosEmergencia from './src/pages/dadosEmergencia';
 import Localizacao from './src/pages/localizacao';
 import {  createLoginInSecureStoreTest, getLocalName, getLocalUser, getLocalPassword, getLocalExpirationDate } from './src/components/function'
 
-
+//Contexto de autenticação
 export const AuthContext = createContext({
   isSignedIn: false,
   setIsSignedIn: () => {},
@@ -27,45 +27,43 @@ const validationTokenLogin=30
 createLoginInSecureStoreTest()
 
 export default function App({navigation}) {
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  //Variável que controla se esta logado ou não
+  const [isSignedIn, setIsSignedIn] = useState(false); 
 
+  //Função que atualiza o estado do login para ser usado como contexto nesta e em outras páginas
   const handleSetIsSignedIn = (value) => setIsSignedIn(value);
   
-  //Função que inicia os serviços de validação de usuário
-  //recupera o valor e verifica se faz mais de 30 dias do último login
-  async function InitialService() {
 
-    //recupera a data de expiração do login/token
-    const getValidation =  await getLocalExpirationDate()
-    //formata como data
-    const validation = new Date(getValidation)
-    //cria variável da data atual
-    const dateNow = new Date()
-    //Verifica a diferença em milesegundos
-    const differenceMilliseconds=dateNow-validation
-    //Converte em dias
-    const differenceInDay= Math.floor(differenceMilliseconds / (1000 * 60 * 60 * 24));
-    
-    //Caso  não tenha expirado 
+  ////////////////////////////////////////////
+  /////    Função de validação de login  /////
+  ////////////////////////////////////////////
+  //Função que faz validação de usuário, recupera o valor de usuário e senha(provisório, futuroserá token)
+  // e verifica se faz mais de 30 dias  do último login
+  async function InitialService() {
+    const getValidation =  await getLocalExpirationDate() //recupera a data de expiração do login/token   
+    const validation = new Date(getValidation)  //formata como data    
+    const dateNow = new Date() //cria variável da data atual   
+    const differenceMilliseconds=dateNow-validation //Verifica a diferença em milesegundos
+    const differenceInDay= Math.floor(differenceMilliseconds / (1000 * 60 * 60 * 24)); //Converte em dias
+    //Caso  não tenha expirado o token
     // Validade de 30 dias
     if(differenceInDay<validationTokenLogin){
       setIsSignedIn(true)
     }
-    
   }
 
-  //Inicia a validação
+  ////////////////////////////////////////////
+  /////    Biblioteca de navegação      /////
+  ////////////////////////////////////////////
+  const Drawer = createDrawerNavigator(); //Inicia navegação
+ 
+  ////////////////////////////////////////////
+  /////    Inicia o seviço de validação  /////
+  ////////////////////////////////////////////
   useEffect(() => {
     InitialService();
   }, []);
-
-  //Variável que controla se esta logado ou não
- // const [isSignedIn, setIsSignedIn] = useState(false)
     
-  //Cria navegação
-  const Drawer = createDrawerNavigator();
-  //const Stack = createNativeStackNavigator();
-
   return (
     <AuthContext.Provider value={{ isSignedIn, setIsSignedIn: handleSetIsSignedIn }}>
       
