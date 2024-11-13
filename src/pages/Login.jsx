@@ -27,7 +27,7 @@ export default function Login({ navigation }) {
     const user = await getLocalUser()
     const password = await getLocalPassword()
     //Verificase usuário admin
-    if(user==='admin' && password==='123456789Az!'){
+    if(user===userEmail && password===userPassWord){
       newDate=new Date().toISOString
       salveLocalExpirationDate(newDate)
       handleLogin()
@@ -72,13 +72,11 @@ export default function Login({ navigation }) {
             onChangeText={
               (text)=>{
                 setUserEmail(text)
-                validateUserEmail(text)
               }
             }
             value={userEmail}
             placeholder="Inseira seu e-mail"
-            keyboardType="e
-            mail-address"
+            keyboardType="email-address"
 
           />
           
@@ -92,7 +90,6 @@ export default function Login({ navigation }) {
             onChangeText={
               (text)=>{
                 setUserPassWord(text)
-                validateUserPassword(text)
               }
             }
             value={userPassWord}
