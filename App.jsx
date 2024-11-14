@@ -14,32 +14,54 @@ import DadosEmergencia from './src/pages/DadosEmergencia';
 import Localizacao from './src/pages/localizacao';
 import {  createLoginInSecureStoreTest, getLocalName, getLocalUser, getLocalPassword, getLocalExpirationDate } from './src/components/function'
 
-//Contexto de autenticação
+//Cria usuário para teste, tem que excluir depois quando for para produção
+createLoginInSecureStoreTest()
+
+////////////////////////////////////////////////////////////
+/////   Validade do login/token armazenado localmente  /////
+////////////////////////////////////////////////////////////
+const validationTokenLogin=30
+
+/**
+ * Contexto de autenticação, sempre iniciando em *false*
+ */ 
 export const AuthContext = createContext({
   isSignedIn: false,
   setIsSignedIn: () => {},
 });
 
-//Validade do login/token armazenado localmente
-const validationTokenLogin=30
-
-//Cria usuário para teste, tem que excluir depois quando for para produção
-createLoginInSecureStoreTest()
-
 export default function App({navigation}) {
-  //Variável que controla se esta logado ou não
+
+  ///////////////////////////////////////////////////////////
+  /////    Variável que controla se esta logado ou não  /////
+  ///////////////////////////////////////////////////////////
   const [isSignedIn, setIsSignedIn] = useState(false); 
 
-  //Função que atualiza o estado do login para ser usado como contexto nesta e em outras páginas
+  
+  /**
+   * **Function handleSetIsSignedIn**
+   * 
+   * Função que atualiza o estado do login para ser usado como contexto nesta e em outras páginas
+   * @param {boolean} value valor quesera setado para `IsSignedIn`
+  */
   const handleSetIsSignedIn = (value) => setIsSignedIn(value);
   
 
-  ////////////////////////////////////////////
-  /////    Função de validação de login  /////
-  ////////////////////////////////////////////
-  //Função que faz validação de usuário, recupera o valor de usuário e senha(provisório, futuroserá token)
-  // e verifica se faz mais de 30 dias  do último login
-  async function InitialService() {
+/**
+ * **Function InitialService**
+ * 
+ * Função que faz validação de usuário. Esta função recupera a data de armazenamento 
+ * do login/token com a função `getLocalExpirationDate()` e verifica se a diferença 
+ * entre a data recuperada e data atual `differenceInDay` é maior que `validationToken`.
+ * 
+ * Caso `differenceInDay` menor que `validationToken` faz login automáticamente.
+ * 
+ * Caso não, será necessário fazer login.
+ * @async `function`
+ * @param {number} validationToken *Type: number* - Este valor será usado como prazo do login/token
+ * @returns void
+ */
+  async function InitialService(validationToken) {
     const getValidation =  await getLocalExpirationDate() //recupera a data de expiração do login/token   
     const validation = new Date(getValidation)  //formata como data    
     const dateNow = new Date() //cria variável da data atual   
@@ -47,30 +69,36 @@ export default function App({navigation}) {
     const differenceInDay= Math.floor(differenceMilliseconds / (1000 * 60 * 60 * 24)); //Converte em dias
     //Caso  não tenha expirado o token
     // Validade de 30 dias
-    if(differenceInDay<validationTokenLogin){
+    if(differenceInDay<validationToken){
       setIsSignedIn(true)
     }
   }
 
-  ////////////////////////////////////////////
-  /////    Biblioteca de navegação      /////
-  ////////////////////////////////////////////
-  const Drawer = createDrawerNavigator(); //Inicia navegação
+
+  //////////////////////////////////////////////////
+  /////    Inicia Biblioteca de Navegação      /////
+  //////////////////////////////////////////////////
+  const Drawer = createDrawerNavigator(); 
  
+
   ////////////////////////////////////////////
   /////    Inicia o seviço de validação  /////
   ////////////////////////////////////////////
   useEffect(() => {
-    InitialService();
+    InitialService(validationTokenLogin);
   }, []);
 
+  /**
+   * **Function Logout**
+   * 
+   *  Função de logout, seta o `isSignedIn` para *false*
+   */
   function Logout(){
     setIsSignedIn(false)
   }
     
   return (
     <AuthContext.Provider value={{ isSignedIn, setIsSignedIn: handleSetIsSignedIn }}>
-      
       <NavigationContainer>
         <Drawer.Navigator
           //initialRouteName='Login'
@@ -131,38 +159,8 @@ export default function App({navigation}) {
         </Drawer.Navigator>
       </NavigationContainer>  
   </AuthContext.Provider>
-    /*
-    //Inicialização padrão para usar nagevação no aplicativo
-    //Cria as páginas dentro Stack.Navigator
-    //Cada Screen é uma página
-    //initialTouteName é a propriedade que define a página inicial
-    //Se deixar vazio sem a propriedade, renderiza o primeiro Screen
-    <NavigationContainer>
-      <Stack.Navigator 
-        initialRouteName='Login'
-        screenOptions={styles.styleTitlePagesColorRedBgWhite} //Estilo para todas as páginas
-      >
-          <Stack.Screen 
-            name="Login" 
-            component={Login}
-            options={styles.styleTitlePagesColorRedBgWhite} //define estilo para pagina atual
-          />
-          <Stack.Screen 
-            name="HomeEmergências" 
-            component={HomeEmergencias} 
-            options={{headerBackVisible:false}}//Esconde no botão de voltar
-            />
-          <Stack.Screen 
-            name="Registrar-se" 
-            component={Registrarse} 
-          />
-      </Stack.Navigator>
-    </NavigationContainer>
-    */
     )
 }
-
-
 
 export const styles = StyleSheet.create({
   styleTitlePagesColorRedBgWhite:{
