@@ -23,8 +23,8 @@ export const handleCall = () => {
   //Sets
 
  async function createLoginInSecureStoreTest () {
-    await SecureStore.setItemAsync('appCbmUser','admin')
-    await SecureStore.setItemAsync('appCbmPassword','123456789Az!')
+    await SecureStore.setItemAsync('appCbmUser','Admin')
+    await SecureStore.setItemAsync('appCbmPassword','123')
     await SecureStore.setItemAsync('appCbmExpirationDate','2024-08-29T01:52:09.302Z')
     await SecureStore.setItemAsync('appCbmName','Humberto Caio Françade Queiroz')
     await SecureStore.setItemAsync('appCbmCPF','00000000000')

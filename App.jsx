@@ -2,7 +2,7 @@ import * as React from 'react';
 import  { createContext, useState, useEffect } from 'react';
 import * as SecureStore from 'expo-secure-store'; //Usa para armazenar informação seguras (login) localmente
 import { StyleSheet, Linking, Alert } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import 'react-native-gesture-handler';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
@@ -36,7 +36,6 @@ export default function App({navigation}) {
   /////    Variável que controla se esta logado ou não  /////
   ///////////////////////////////////////////////////////////
   const [isSignedIn, setIsSignedIn] = useState(false); 
-
   
   /**
    * **Function handleSetIsSignedIn**
@@ -93,8 +92,9 @@ export default function App({navigation}) {
    * 
    *  Função de logout, seta o `isSignedIn` para *false*
    */
-  function Logout(){
+  function Logout(navigation){
     setIsSignedIn(false)
+    navigation.closeDrawer()
   }
     
   return (
@@ -115,7 +115,7 @@ export default function App({navigation}) {
                 {isSignedIn && (
                   <DrawerItem
                   label="Sair"
-                  onPress={() => Logout()}
+                  onPress={() => Logout(props.navigation)}
                   activeTintColor='#fff'
                   inactiveTintColor='#e7e7e7'
                 />
@@ -135,6 +135,7 @@ export default function App({navigation}) {
               <Drawer.Screen 
                 name="Localização" 
                 component={Localizacao} 
+                options={{ drawerLabel: () => null, title: null }} // Oculta do Drawer
               />
               <Drawer.Screen 
                 name="Dados da Emergência" 

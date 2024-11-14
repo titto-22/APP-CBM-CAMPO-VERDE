@@ -27,7 +27,7 @@ export default function Login({ navigation }) {
     const user = await getLocalUser()
     const password = await getLocalPassword()
     //Verificase usuário admin
-    if(user===userEmail && password===userPassWord){
+    if(user===userEmail.trim() && password===userPassWord.trim()){
       newDate=new Date().toISOString
       salveLocalExpirationDate(newDate)
       handleLogin()
