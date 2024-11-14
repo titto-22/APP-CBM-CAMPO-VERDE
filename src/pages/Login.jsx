@@ -31,6 +31,10 @@ export default function Login({ navigation }) {
       newDate=new Date().toISOString
       salveLocalExpirationDate(newDate)
       handleLogin()
+      setErrorLogin(false)
+    }
+    else{
+      setErrorLogin(true)
     }
   }
 
@@ -95,8 +99,8 @@ export default function Login({ navigation }) {
             value={userPassWord}
             placeholder="Inseira sua senha"
           />
-          <Text style={[{display:errorLogin?'flex':'none'},stylesMain.textRed]}>
-            Erro ao efetuar lofgin, confira o e-mail e senha.
+          <Text style={[{display:errorLogin?'flex':'none'},stylesMain.textRed, stylesMain.opacity]}>
+            Usuário ou senha incorretos, verifique o e-mail e senha.
           </Text>
         </View>
         <TouchableOpacity 
@@ -147,6 +151,10 @@ export const stylesMain = StyleSheet.create({
     headerTitleStyle: {
       fontWeight: 'bold',
     }
+  },
+  opacity:{
+    opacity:0.4,
+    fontWeight: 'bold',
   },
   containerMain: {
     flex: 1,
