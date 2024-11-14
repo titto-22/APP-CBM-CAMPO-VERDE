@@ -10,7 +10,7 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerI
 import Login from './src/pages/Login';
 import HomeEmergencias from './src/pages/HomeEmergencias';
 import Registrarse from './src/pages/Registrarse';
-import dadosEmergencia from './src/pages/dadosEmergencia';
+import DadosEmergencia from './src/pages/DadosEmergencia';
 import Localizacao from './src/pages/localizacao';
 import {  createLoginInSecureStoreTest, getLocalName, getLocalUser, getLocalPassword, getLocalExpirationDate } from './src/components/function'
 
@@ -63,6 +63,10 @@ export default function App({navigation}) {
   useEffect(() => {
     InitialService();
   }, []);
+
+  function Logout(){
+    setIsSignedIn(false)
+  }
     
   return (
     <AuthContext.Provider value={{ isSignedIn, setIsSignedIn: handleSetIsSignedIn }}>
@@ -79,7 +83,16 @@ export default function App({navigation}) {
                 onPress={() => Linking.openURL('https://www.youtube.com')}
                 activeTintColor='#fff'
                 inactiveTintColor='#e7e7e7'
-              />
+                />
+                {isSignedIn && (
+                  <DrawerItem
+                  label="Sair"
+                  onPress={() => Logout()}
+                  activeTintColor='#fff'
+                  inactiveTintColor='#e7e7e7'
+                />
+                )}
+
             </DrawerContentScrollView>
               )}
         > 
@@ -97,7 +110,7 @@ export default function App({navigation}) {
               />
               <Drawer.Screen 
                 name="Dados da Emergência" 
-                component={dadosEmergencia} 
+                component={DadosEmergencia} 
 
               />
             </>
