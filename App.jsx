@@ -135,11 +135,18 @@ export default function App({navigation}) {
               <Drawer.Screen 
                 name="Localização" 
                 component={Localizacao} 
-                options={{ drawerLabel: () => null, title: null }} // Oculta do Drawer
+                options={{ 
+                  drawerItemStyle: { display: 'none' }, // Oculta no menu lateral
+                  headerShown: false // Oculta o título no cabeçalho
+                }} 
               />
               <Drawer.Screen 
                 name="Dados da Emergência" 
                 component={DadosEmergencia} 
+                options={{ 
+                  drawerItemStyle: { display: 'none' }, // Oculta no menu lateral
+                  headerShown: false // Oculta o título no cabeçalho
+                }} 
 
               />
             </>

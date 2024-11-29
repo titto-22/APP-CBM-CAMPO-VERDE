@@ -26,10 +26,11 @@ export const handleCall = () => {
     await SecureStore.setItemAsync('appCbmUser','Admin')
     await SecureStore.setItemAsync('appCbmPassword','123')
     await SecureStore.setItemAsync('appCbmExpirationDate','2024-08-29T01:52:09.302Z')
-    await SecureStore.setItemAsync('appCbmName','Humberto Caio Françade Queiroz')
+    await SecureStore.setItemAsync('appCbmName','João da Silva')
+    await SecureStore.setItemAsync('appCbmCPF','01234567890')
     await SecureStore.setItemAsync('appCbmCPF','00000000000')
     await SecureStore.setItemAsync('appCbmTelefon','5566999999999')
-    await SecureStore.setItemAsync('appCbmAddress','Avenida ulisses gumaraes, 1121, bairro bela vista, campo verde matro grosso brazil zzzzzzzzzzzzz')
+    await SecureStore.setItemAsync('appCbmAddress','Avenida Brasil, 001, Bairro Centro, Campo Verde Mato-Grosso, Brazil zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')
     console.log('Create data teste')
   }
   export {createLoginInSecureStoreTest}

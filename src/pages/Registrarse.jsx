@@ -1,4 +1,5 @@
-import {Text, View, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
+import {Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { stylesMain } from '../pages/Login';
 import { rem, handleCall } from '../components/function';
 import IconFacebook from '../assets/iconFacebook.svg';
@@ -12,6 +13,7 @@ export default function Registrarse({ navigation}){
   const [errorPassword,setErrorPassword]=useState(false)
 
   //Valida formato do email
+  /*
   function validateUserEmail(email){
     //Regex para validar email
     const emailRegex =/^[^\s@]+@[^\s@]+\.(com|com\.br)$/
@@ -31,7 +33,7 @@ export default function Registrarse({ navigation}){
 
     // Seta o estado de acordo com a validação
     setErrorPassword(!isValid);
-  }
+  }*/
 
   return(
     <View>
@@ -39,7 +41,7 @@ export default function Registrarse({ navigation}){
         Criar conta
       </Text>
       <View style={stylesMain.with80}>
-          <View style={[stylesMain.containerTextTopInput]}>
+      <View style={[stylesMain.containerTextTopInput]}>
             <Text style={stylesMain.textTopInput}>
               E-mail:
             </Text>
@@ -49,7 +51,7 @@ export default function Registrarse({ navigation}){
             onChangeText={
               (text)=>{
                 setUserEmail(text)
-                validateUserEmail(text)
+                //validateUserEmail(text)
               }
             }
             value={userEmail}
@@ -71,7 +73,7 @@ export default function Registrarse({ navigation}){
             onChangeText={
               (text)=>{
                 setUserPassWord(text)
-                validateUserPassword(text)
+                //validateUserPassword(text)
               }
             }
             value={userPassWord}

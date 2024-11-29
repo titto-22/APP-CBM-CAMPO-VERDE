@@ -122,7 +122,8 @@ export default function Login({ navigation }) {
         <TouchableOpacity 
           accessibilityLabel="Ir para a tela de registro"
           onPress={()=>{
-            removeUserLogin()
+            navigation.navigate(
+              'Registrar-se')
           }
         }>
           <Text style={[stylesMain.textRed]}>
