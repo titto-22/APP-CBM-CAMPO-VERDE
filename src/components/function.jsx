@@ -23,8 +23,8 @@ export const handleCall = () => {
   //Sets
 
  async function createLoginInSecureStoreTest () {
-    await SecureStore.setItemAsync('appCbmUser','admin')
-    await SecureStore.setItemAsync('appCbmPassword','123456789az!')
+    await SecureStore.setItemAsync('appCbmUser','Admin')
+    await SecureStore.setItemAsync('appCbmPassword','123')
     await SecureStore.setItemAsync('appCbmExpirationDate','2024-08-29T01:52:09.302Z')
     await SecureStore.setItemAsync('appCbmName','Humberto Caio Françade Queiroz')
     await SecureStore.setItemAsync('appCbmCPF','00000000000')
@@ -91,7 +91,7 @@ export const handleCall = () => {
     const result1 = await SecureStore.getItemAsync('appCbmUser')
     const result2 = await SecureStore.getItemAsync('appCbmPassword')
     const result3 = await SecureStore.getItemAsync('appCbmExpirationDate')
-    if(result1 & result2 & result3){
+    if(result1 && result2 && result3){
       console.log('Login get user, password and expiration date')
     } else{
       console.log('Error get Login')
@@ -103,7 +103,7 @@ export const handleCall = () => {
   async function getLocalUser() {
     const result = await SecureStore.getItemAsync('appCbmUser')
     if(result){
-      console.log('User get',result)
+      console.log('User get:',result)
     } else{
       console.log('Error get User')
     }

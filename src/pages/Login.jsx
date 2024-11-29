@@ -6,21 +6,37 @@ import IconFacebook from '../assets/iconFacebook.svg';
 import IconGoogle from '../assets/iconGoogle.svg';
 import IconCall from '../assets/call.svg';
 
-import { getLocalUser } from '../components/function'
+import React, { useContext } from '../../node_modules/react';
+import { AuthContext } from '../../App';
 
-function teste(){
-  const result=getLocalUser()
-  console.log(result.appCbmUser)
-  typeof result
-  //Alert.alert('alerta',result)
-}
+import { getLocalUser, getLocalLogin, getLocalPassword, salveLocalExpirationDate } from '../components/function'
+
 
 export default function Login({ navigation }) {
+  const { isSignedIn, setIsSignedIn } = useContext(AuthContext);
+  const handleLogin = () => {
+    setIsSignedIn(true); // Atualiza o estado de login
+  };
 
 
   const [userEmail, setUserEmail]=useState('')
   const [userPassWord, setUserPassWord]=useState('')
   const [errorLogin,setErrorLogin]=useState(false)
+
+  async function verificaLogin(){
+    const user = await getLocalUser()
+    const password = await getLocalPassword()
+    //Verificase usuário admin
+    if(user===userEmail.trim() && password===userPassWord.trim()){
+      newDate=new Date().toISOString
+      salveLocalExpirationDate(newDate)
+      handleLogin()
+      setErrorLogin(false)
+    }
+    else{
+      setErrorLogin(true)
+    }
+  }
 
 
   return (
@@ -60,13 +76,11 @@ export default function Login({ navigation }) {
             onChangeText={
               (text)=>{
                 setUserEmail(text)
-                validateUserEmail(text)
               }
             }
             value={userEmail}
             placeholder="Inseira seu e-mail"
-            keyboardType="e
-            mail-address"
+            keyboardType="email-address"
 
           />
           
@@ -80,18 +94,17 @@ export default function Login({ navigation }) {
             onChangeText={
               (text)=>{
                 setUserPassWord(text)
-                validateUserPassword(text)
               }
             }
             value={userPassWord}
             placeholder="Inseira sua senha"
           />
-          <Text style={[{display:errorLogin?'flex':'none'},stylesMain.textRed]}>
-            Erro ao efetuar lofgin, confira o e-mail e senha.
+          <Text style={[{display:errorLogin?'flex':'none'},stylesMain.textRed, stylesMain.opacity]}>
+            Usuário ou senha incorretos, verifique o e-mail e senha.
           </Text>
         </View>
         <TouchableOpacity 
-          onPress={()=>{teste()}} 
+          onPress={()=>{verificaLogin()}} 
           style={[stylesMain.buttonSemiRounded,stylesMain.backgroundRed, stylesMain.withFull,stylesMain.with80]}
         >
           <Text style={stylesMain.textoButtonWith}>
@@ -138,6 +151,10 @@ export const stylesMain = StyleSheet.create({
     headerTitleStyle: {
       fontWeight: 'bold',
     }
+  },
+  opacity:{
+    opacity:0.4,
+    fontWeight: 'bold',
   },
   containerMain: {
     flex: 1,
