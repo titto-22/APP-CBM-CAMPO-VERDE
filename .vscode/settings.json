@@ -87,5 +87,6 @@
       "database": "postgres",
       "username": "postgres"
     }
-  ]
+  ],
+  "DockerRun.DisableDockerrc": true
 }
