@@ -1,5 +1,5 @@
 import { useState, useRef  } from "react";
-import { Text, View, TouchableOpacity, TextInput, StyleSheet } from "react-native";
+import { Text, View, TouchableOpacity, TextInput, StyleSheet, Alert } from "react-native";
 import { stylesMain } from "../pages/Login";
 import { rem, handleCall } from "../components/function";
 import IconFacebook from "../assets/iconFacebook.svg";
@@ -49,19 +49,62 @@ export default function Registrarse({ navigation }) {
 
     setCpf(formatted);
   };
+
+
+	function validarCpf(cpf) {
+
+		cpf = cpf.replace(/[^\d]+/g, ''); // Remove caracteres não numéricos
+	
+		if (cpf.length !== 11) {
+			return false;
+		}
+	
+		if (
+			cpf === '00000000000' ||
+			cpf === '11111111111' ||
+			cpf === '22222222222' ||
+			cpf === '33333333333' ||
+			cpf === '44444444444' ||
+			cpf === '55555555555' ||
+			cpf === '66666666666' ||
+			cpf === '77777777777' ||
+			cpf === '88888888888' ||
+			cpf === '99999999999'
+		) {
+			return false; // CPF com todos os dígitos iguais é inválido
+		}
+	
+		let soma = 0;
+		for (let i = 0; i < 9; i++) {
+			soma += Number.parseInt(cpf.charAt(i)) * (10 - i);
+		}
+		let resto = 11 - (soma % 11);
+		const digito1 = resto < 10 ? resto : 0;
+	
+		soma = 0;
+		for (let i = 0; i < 10; i++) {
+			soma += Number.parseInt(cpf.charAt(i)) * (11 - i);
+		}
+		resto = 11 - (soma % 11);
+		const digito2 = resto < 10 ? resto : 0;
+	
+		return (
+			Number.parseInt(cpf.charAt(9)) === digito1 && Number.parseInt(cpf.charAt(10)) === digito2
+		);
+	}
 	
 	//Valida formato do email
-	/*
   function validateUserEmail(email){
-    //Regex para validar email
+		//Regex para validar email
     const emailRegex =/^[^\s@]+@[^\s@]+\.(com|com\.br)$/
-
+		
     // Verifica se o email corresponde à expressão regular
     const isValid = emailRegex.test(email);
-
+		
     // Seta o estado de acordo com a validação
     setErrorEmail(!isValid);
-  }
+		}
+		/*
 
   //Valida formato da senha
   function validateUserPassword(password){
@@ -80,8 +123,9 @@ export default function Registrarse({ navigation }) {
 				<View style={[stylesMain.containerTextTopInput]}>
 					<Text style={stylesMain.textTopInput}>E-mail:</Text>
 				</View>
-				<TextInput
+				<TextInput                                                     // Email
 					style={[stylesMain.input, stylesMain.withFull]}
+					maxLength={45}
 					onFocus={() => setIsFocused(true)}
 					onBlur={() => setIsFocused(false)}
 					returnKeyType="next" //define botão no teclado de proximo
@@ -92,7 +136,7 @@ export default function Registrarse({ navigation }) {
 					onChangeText={(text) => {
 						setUserEmail(text);
 						
-						//validateUserEmail(text)
+						validateUserEmail(text)
 					}}
 					value={userEmail}
 					placeholder="Insira seu e-mail"
@@ -120,7 +164,7 @@ export default function Registrarse({ navigation }) {
 						},
 					]}
 				>
-					<TextInput
+					<TextInput                                           //Primeira senha
 						style={{ width: "90%" }}
 						onFocus={() => setIsFocused(true)}
 						onBlur={() => setIsFocused(false)}
@@ -163,10 +207,12 @@ export default function Registrarse({ navigation }) {
 						},
 					]}
 				>
-					<TextInput
+					<TextInput                                             //Segunda senha
 						style={{ width: "90%" }}
 						onFocus={() => setIsFocused(true)}
-						onBlur={() => setIsFocused(false)}
+						onBlur={() => {
+							setIsFocused(false)}
+						}
 						returnKeyType="next" //define botão no teclado de proximo
 						ref={thirdInputRef} //define a referencia
 						onSubmitEditing={() => {
@@ -201,7 +247,15 @@ export default function Registrarse({ navigation }) {
 					value={cpf}
 					maxLength={14}
 					onFocus={() => setIsFocused(true)}
-					onBlur={() => setIsFocused(false)}
+					onBlur={() => {
+						if(validarCpf(cpf)){
+							//setIsFocused(false)
+							setErrorEmail(false)
+						} else{
+							setErrorEmail(true)
+							fourthInputRef.current.focus()
+						}
+					}}
 					ref={fourthInputRef} //define a referencia
 					returnKeyType="next" //define botão no teclado de proximo
 					onSubmitEditing={() => {
