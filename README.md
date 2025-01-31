@@ -19,7 +19,7 @@ https://reactnavigation.org/
 
 `npx expo install react-native-screens react-native-safe-area-context`
 
-#### Bibliioteca para uso de SVG
+#### Biblioteca para uso de SVG
 
 https://docs.expo.dev/versions/latest/sdk/svg/
 
