@@ -83,7 +83,7 @@ export default function Login({ navigation }) {
 				<TextInput
 					style={[stylesMain.input, stylesMain.withFull]}
 					onChangeText={(text) => {
-						setUserEmail(text);
+						setUserEmail(text.toLowerCase());
 					}}
 					value={userEmail}
 					placeholder="Insira seu e-mail"
@@ -239,7 +239,7 @@ export const stylesMain = StyleSheet.create({
 		transform: [{ translateY: 13 }],
 		backgroundColor: "#fff",
 		zIndex: 999,
-		width: rem(5),
+		width: rem(5.5),
 		alignItems: "left",
 		color: "#94a3b8",
 	},

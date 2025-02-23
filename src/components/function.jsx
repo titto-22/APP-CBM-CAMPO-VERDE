@@ -23,7 +23,7 @@ export const handleCall = () => {
   //Sets
 
  async function createLoginInSecureStoreTest () {
-    await SecureStore.setItemAsync('appCbmUser','Admin')
+    await SecureStore.setItemAsync('appCbmUser','admin')
     await SecureStore.setItemAsync('appCbmPassword','123')
     await SecureStore.setItemAsync('appCbmExpirationDate','2024-08-29T01:52:09.302Z')
     await SecureStore.setItemAsync('appCbmName','João da Silva')
@@ -68,7 +68,7 @@ export const handleCall = () => {
   export {salveLocalName}
 
   async function salveLocalCPF(cpf) {
-    await SegureStorage.setItemAsync('appCbmCPF',cpf)
+    await SecureStore.setItemAsync('appCbmCPF',cpf)
     console.log('CPF salve')
   }
   export{salveLocalCPF}
@@ -84,6 +84,23 @@ export const handleCall = () => {
     console.log('Adress salve')
   }
   export {salveLocalAdress}
+
+  /**
+ * Essa função obrigatóriamente deve receber um array para salvar no SecureStore.
+ * @param {array} incident *Type: Array* - recebe um array que contém internamente
+ * um segundo array com 5 itens (somente o valor) em ordem, sendo: 1º nome, 
+ * 2º cpf, 3º tipo da emergência, 4º endereço da ocorrência e 5º descrição da ocorrência.
+ */
+  async function salveLocalIncident(incident) {
+    try {
+      const arrayString = JSON.stringify(incident);
+      await SecureStore.setItemAsync('appCbmIncident',arrayString)
+      console.log('Incident salve')
+    } catch (error) {
+      console.error('Error saving incident:', error);
+    }
+  }
+  export {salveLocalIncident}
 
 
   //Gets
@@ -146,7 +163,7 @@ export const handleCall = () => {
   export {getLocalName}
 
   async function getLocalCPF() {
-    const result = await SegureStorage.getItemAsync('appCbmCPF')
+    const result = await SecureStore.getItemAsync('appCbmCPF')
     if(result){
       console.log('CPF get')
     } else{
@@ -178,10 +195,28 @@ export const handleCall = () => {
   }
   export {getLocalAdress}
 
-
-  async function name(params) {
-    
+async function getLocalIncident() {
+  try {
+    const arrayString = await SecureStore.getItemAsync("appCbmIncident");
+    if (arrayString) {
+      const array = JSON.parse(arrayString);
+      console.log("Array recuperado:", array);
+      return array;
+    // biome-ignore lint/style/noUselessElse: <explanation>
+    } else {
+      console.log("Nenhum array encontrado com a chave:", "appCbmIncident");
+      return null;
+    }
+  } catch (error) {
+    console.error("Erro ao recuperar o array:", error);
+    return null;
   }
+}
+  export {getLocalIncident}
+
+
+
+
 
 //Não iremos utilizar delet por hora
   async function removeLogin(params) {
@@ -189,4 +224,20 @@ export const handleCall = () => {
     console.log('Apagado','Apagado o Login' )
   }
   
+  async function removeIncident(params) {
+    await SecureStore.deleteItemAsync('appCbmIncident')
+    console.log('Apagado','Apagado o Login' )
+  }
+
+
+  //zera array local de incidentes
+  async function resetLocalIncident() {
+    try {
+      await SecureStore.setItemAsync('appCbmIncident',JSON.stringify([[null,null,null,null,null]]))
+      console.log('Incident reset')
+    } catch (error) {
+      console.error('Error saving incident:', error);
+    }
+  }
+  export {resetLocalIncident}
   

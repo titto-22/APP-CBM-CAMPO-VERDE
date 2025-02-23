@@ -18,6 +18,7 @@ import {
 	getLocalUser,
 	getLocalPassword,
 	getLocalExpirationDate,
+	resetLocalIncident,
 } from "./src/components/function";
 
 //Cria usuário para teste, tem que excluir depois quando for para produção
@@ -65,6 +66,7 @@ export default function App({ navigation }) {
 	 * @returns void
 	 */
 	async function InitialService(validationToken) {
+		resetLocalIncident()
 		const getValidation = await getLocalExpirationDate(); //recupera a data de expiração do login/token
 		const validation = new Date(getValidation); //formata como data
 		const dateNow = new Date(); //cria variável da data atual
@@ -87,7 +89,8 @@ export default function App({ navigation }) {
 	////////////////////////////////////////////
 	/////    Inicia o serviço de validação  /////
 	////////////////////////////////////////////
-	useEffect(() => {
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+				useEffect(() => {
 		InitialService(validationTokenLogin);
 	}, []);
 
@@ -114,7 +117,7 @@ export default function App({ navigation }) {
 							<DrawerItemList {...props} />
 							<DrawerItem
 								label="Ajuda"
-								onPress={() => Linking.openURL("https://www.youtube.com")}
+								onPress={() => Linking.openURL("https://www.youtube.com/watch?v=gtKdj9U9oqA")}
 								activeTintColor="#fff"
 								inactiveTintColor="#e7e7e7"
 							/>
@@ -149,7 +152,7 @@ export default function App({ navigation }) {
 								component={DadosEmergencia}
 								options={{
 									drawerItemStyle: { display: "none" }, // Oculta no menu lateral
-									headerShown: false, // Oculta o título no cabeçalho
+									//headerShown: false, // Oculta o título no cabeçalho
 								}}
 							/>
 						</>
