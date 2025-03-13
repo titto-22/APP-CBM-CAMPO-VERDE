@@ -8,9 +8,9 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./src/assets/Logo400x400.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#fff"
+      "backgroundColor": "#ffffff"
     },
     "packagerOpts": {
       "config": "metro.config.js",
@@ -29,7 +29,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/Logo400x400.png",
         "backgroundColor": "#fff"
-      }
+      },
+      "package": "com.devhumberto.APPCBM"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -41,6 +42,11 @@
           "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "85a9b27e-8393-4951-8246-b3e192b9fc16"
+      }
+    }
   }
 }

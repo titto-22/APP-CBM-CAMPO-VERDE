@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
-	StyleSheet,
-	Text,
-	View,
-	TouchableOpacity,
-	TextInput,
-	Alert,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
 } from "react-native";
 import { rem, handleCall } from "../components/function";
 import CbmLogo from "../assets/LogoCBM.svg";
@@ -19,155 +18,170 @@ import React, { useContext } from "../../node_modules/react";
 import { AuthContext } from "../../App";
 
 import {
-	getLocalUser,
-	getLocalLogin,
-	getLocalPassword,
-	salveLocalExpirationDate,
+  getLocalUser,
+  getLocalPassword,
+  salveLocalExpirationDate,
 } from "../components/function";
 
 export default function Login({ navigation }) {
-	const { isSignedIn, setIsSignedIn } = useContext(AuthContext);
-	const handleLogin = () => {
-		setIsSignedIn(true); // Atualiza o estado de login
-	};
+  const { setIsSignedIn } = useContext(AuthContext);
+  const handleLogin = () => {
+    setIsSignedIn(true);
+  };
 
-	const [userEmail, setUserEmail] = useState("");
-	const [userPassWord, setUserPassWord] = useState("");
-	const [errorLogin, setErrorLogin] = useState(false);
-	const [hiddenPassword, setHiddenPassword] = useState(true);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const [errorLogin, setErrorLogin] = useState(false);
+  const [hiddenPassword, setHiddenPassword] = useState(true);
 
-	async function verificaLogin() {
-		const user = await getLocalUser();
-		const password = await getLocalPassword();
-		//Verifica-se usuário admin
-		if (user === userEmail.trim() && password === userPassWord.trim()) {
-			newDate = new Date().toISOString;
-			salveLocalExpirationDate(newDate);
-			handleLogin();
-			setErrorLogin(false);
-		} else {
-			setErrorLogin(true);
-		}
-	}
+  async function verificaLogin() {
+    const user = await getLocalUser();
+    const password = await getLocalPassword();
 
-	return (
-		<View style={stylesMain.containerMain}>
-			<View style={[stylesMain.flexRow]}>
-				<CbmLogo width={rem(4)} height={rem(4)} />
-				<Text style={stylesMain.textMain}>Emergências</Text>
-				<Text style={stylesMain.textMain}>193</Text>
-			</View>
-			<Text style={stylesMain.textBase}>Efetue seu Login</Text>
-			<View style={stylesMain.flexRow}>
-				<TouchableOpacity
-					onPress={() => {}}
-					style={stylesMain.buttonSemiRounded}
-				>
-					<View style={stylesMain.containerIcon}>
-						<IconFacebook width={rem(2.5)} height={rem(2.5)} />
-					</View>
-				</TouchableOpacity>
-				<TouchableOpacity
-					onPress={() => {}}
-					style={stylesMain.buttonSemiRounded}
-				>
-					<View style={stylesMain.containerIcon}>
-						<IconGoogle width={rem(2.25)} height={rem(2.25)} />
-					</View>
-				</TouchableOpacity>
-			</View>
-			<View style={stylesMain.with80}>
-				<View style={[stylesMain.containerTextTopInput]}>
-					<Text style={stylesMain.textTopInput}>E-mail:</Text>
-				</View>
-				<TextInput
-					style={[stylesMain.input, stylesMain.withFull]}
-					onChangeText={(text) => {
-						setUserEmail(text.toLowerCase());
-					}}
-					value={userEmail}
-					placeholder="Insira seu e-mail"
-					keyboardType="email-address"
-				/>
+    if (
+      emailRef.current?.value === user &&
+      passwordRef.current?.value === password
+    ) {
+      salveLocalExpirationDate(new Date().toISOString());
+      handleLogin();
+      setErrorLogin(false);
+    } else {
+      setErrorLogin(true);
+    }
+  }
 
-				<View style={stylesMain.containerTextTopInput}>
-					<Text style={stylesMain.textTopInput}>Senha:</Text>
-				</View>
-				<View style={[
-						stylesMain.input,
-						stylesMain.withFull,
-						{
-							flexDirection: "row",
-							alignItems: "center",
-							justifyContent: "space-between",
-						},
-					]}>
-					<TextInput
-						style={{ width: "90%" }}
-						onChangeText={(text) => {
-							setUserPassWord(text);
-						}}
-						value={userPassWord}
-						placeholder="Insira sua senha"
+	useEffect(() => {
+    if (emailRef.current) {
+      setTimeout(() => {
+        emailRef.current.focus();
+      }, 5000); // Adiciona um atraso de 100 milissegundos
+    }
+  }, []);
+
+  return (
+    <View style={stylesMain.containerMain}>
+      <View style={[stylesMain.flexRow]}>
+        <CbmLogo width={rem(4)} height={rem(4)} />
+        <Text style={stylesMain.textMain}>Emergências</Text>
+        <Text style={stylesMain.textMain}>193</Text>
+      </View>
+      <Text style={stylesMain.textBase}>Efetue seu Login</Text>
+      <View style={stylesMain.flexRow}>
+        <TouchableOpacity
+          onPress={() => {}}
+          style={stylesMain.buttonSemiRounded}
+        >
+          <View style={stylesMain.containerIcon}>
+            <IconFacebook width={rem(2.6)} height={rem(2.5)} />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {}}
+          style={stylesMain.buttonSemiRounded}
+        >
+          <View style={stylesMain.containerIcon}>
+            <IconGoogle width={rem(2.25)} height={rem(2.25)} />
+          </View>
+        </TouchableOpacity>
+      </View>
+      <View style={stylesMain.with80}>
+        <View style={[stylesMain.containerTextTopInput]}>
+          <Text style={stylesMain.textTopInput}>E-mail:</Text>
+        </View>
+        <TextInput
+          style={[stylesMain.input, stylesMain.withFull]}
+          onChangeText={(text) => {
+            if (emailRef.current) {
+              emailRef.current.value = text.toLowerCase();
+            }
+          }}
+          ref={emailRef}
+          placeholder="Insira seu e-mail"
+          keyboardType="email-address"
+        />
+
+        <View style={stylesMain.containerTextTopInput}>
+          <Text style={stylesMain.textTopInput}>Senha:</Text>
+        </View>
+        <View
+          style={[
+            stylesMain.input,
+            stylesMain.withFull,
+            {
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            },
+          ]}
+        >
+          <TextInput
+            style={{ width: "90%" }}
+            onChangeText={(text) => {
+              if (passwordRef.current) {
+                passwordRef.current.value = text;
+              }
+            }}
+            ref={passwordRef}
+            placeholder="Insira sua senha"
             secureTextEntry={hiddenPassword}
-					/>
-					<TouchableOpacity
-						onPress={() => {
-							setHiddenPassword(!hiddenPassword);
-						}}
-					>
-						{hiddenPassword ? (
-							<EyeOn name="onPassword" width={rem(1.5)} height={rem(1.5)} />
-						) : (
-							<EyeOf name="onPassword" width={rem(1.5)} height={rem(1.5)} />
-						)}
-					</TouchableOpacity>
-				</View>
-				<Text
-					style={[
-						{ display: errorLogin ? "flex" : "none" },
-						stylesMain.textRed,
-						stylesMain.opacity,
-					]}
-				>
-					Usuário ou senha incorretos, verifique o e-mail e senha.
-				</Text>
-			</View>
-			<TouchableOpacity
-				onPress={() => {
-					verificaLogin();
-				}}
-				style={[
-					stylesMain.buttonSemiRounded,
-					stylesMain.backgroundRed,
-					stylesMain.withFull,
-					stylesMain.with80,
-				]}
-			>
-				<Text style={stylesMain.textoButtonWith}>Acessar</Text>
-			</TouchableOpacity>
-			<TouchableOpacity
-				onPress={() => {
-					getUserLogin();
-				}}
-			>
-				<Text style={[stylesMain.textTopInput]}>Esqueceu a senha?</Text>
-			</TouchableOpacity>
-			<Text style={[stylesMain.textTopInput]}>ou</Text>
-			<TouchableOpacity
-				accessibilityLabel="Ir para a tela de registro"
-				onPress={() => {
-					navigation.navigate("Registrar-se");
-				}}
-			>
-				<Text style={[stylesMain.textRed]}>Registrar-se</Text>
-			</TouchableOpacity>
-			<TouchableOpacity onPress={handleCall} style={stylesMain.buttonCall}>
-				<IconCall width={rem(2.25)} height={rem(2.25)} />
-				<Text style={[stylesMain.textRed, stylesMain.textBold]}>193</Text>
-			</TouchableOpacity>
-		</View>
-	);
+          />
+          <TouchableOpacity
+            onPress={() => {
+              setHiddenPassword(!hiddenPassword);
+            }}
+          >
+            {hiddenPassword ? (
+              <EyeOn name="onPassword" width={rem(1.5)} height={rem(1.5)} />
+            ) : (
+              <EyeOf name="onPassword" width={rem(1.5)} height={rem(1.5)} />
+            )}
+          </TouchableOpacity>
+        </View>
+        <Text
+          style={[
+            { display: errorLogin ? "flex" : "none" },
+            stylesMain.textRed,
+            stylesMain.opacity,
+          ]}
+        >
+          Usuário ou senha incorretos, verifique o e-mail e senha.
+        </Text>
+      </View>
+      <TouchableOpacity
+        onPress={() => {
+          verificaLogin();
+        }}
+        style={[
+          stylesMain.buttonSemiRounded,
+          stylesMain.backgroundRed,
+          stylesMain.withFull,
+          stylesMain.with80,
+        ]}
+      >
+        <Text style={stylesMain.textoButtonWith}>Acessar</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          getLocalUser();
+        }}
+      >
+        <Text style={[stylesMain.textTopInput]}>Esqueceu a senha?</Text>
+      </TouchableOpacity>
+      <Text style={[stylesMain.textTopInput]}>ou</Text>
+      <TouchableOpacity
+        accessibilityLabel="Ir para a tela de registro"
+        onPress={() => {
+          navigation.navigate("Registrar-se");
+        }}
+      >
+        <Text style={[stylesMain.textRed]}>Registrar-se</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handleCall} style={stylesMain.buttonCall}>
+        <IconCall width={rem(2.25)} height={rem(2.25)} />
+        <Text style={[stylesMain.textRed, stylesMain.textBold]}>193</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
 
 export const stylesMain = StyleSheet.create({
@@ -219,7 +233,7 @@ export const stylesMain = StyleSheet.create({
 		fontWeight: "bold",
 	},
 	buttonSemiRounded: {
-		width: rem(0.75),
+		width: rem(3),
 		height: rem(3),
 		borderRadius: rem(3),
 		alignItems: "center",
@@ -245,6 +259,7 @@ export const stylesMain = StyleSheet.create({
 	},
 	textTopInput: {
 		color: "#64748b",
+		fontSize: rem(0.8),
 	},
 	textBold: {
 		fontWeight: "bold",

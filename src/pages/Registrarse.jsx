@@ -245,29 +245,11 @@ export default function Registrarse({ navigation }) {
 		//Caso nome não seja valido retorna true, inverto o resultado
 		//para entrar no if de erro e mostrar a ajudo em vermelho e
 		//da foco no input
-		if (!nameIsValid(userName)) {
-			setInsightName(true);
-			setErrorName(true);
+		if (!isValidateAddress(userAddress)) {
+			setInsightAddress(true);
+			setErrorAddress(true);
 			result = false;
-			firstInputRef.current.focus();
-		}
-		if (!validateUserEmail(userEmail)) {
-			setInsightEmail(true);
-			setErrorEmail(true);
-			result = false;
-			secondInputRef.current.focus();
-		}
-		if (!validateUserPassword(userPassWord)) {
-			setInsightPassword(true);
-			setErrorPassword(true);
-			result = false;
-			thirdInputRef.current.focus();
-		}
-		if (!isEqualPassword(confirmPassWord)) {
-			setInsightConfirm(true);
-			setErrorConfirm(true);
-			result = false;
-			fourthInputRef.current.focus();
+			sixthInputRef.current.focus();
 		}
 		if (!validateCpf(cpf)) {
 			setInsightCpf(true);
@@ -275,12 +257,34 @@ export default function Registrarse({ navigation }) {
 			result = false;
 			fifthInputRef.current.focus();
 		}
-		if (!isValidateAddress(userAddress)) {
-			setInsightAddress(true);
-			setErrorAddress(true);
+		if (!isEqualPassword(confirmPassWord)) {
+			setInsightConfirm(true);
+			setErrorConfirm(true);
 			result = false;
-			sixthInputRef.current.focus();
+			fourthInputRef.current.focus();
 		}
+		
+		if (!validateUserPassword(userPassWord)) {
+			setInsightPassword(true);
+			setErrorPassword(true);
+			result = false;
+			thirdInputRef.current.focus();
+		}
+		if (!validateUserEmail(userEmail)) {
+			setInsightEmail(true);
+			setErrorEmail(true);
+			result = false;
+			secondInputRef.current.focus();
+		}
+		if (!nameIsValid(userName)) {
+			setInsightName(true);
+			setErrorName(true);
+			result = false;
+			firstInputRef.current.focus();
+		}
+	
+		
+		
 		return result;
 	}
 
@@ -653,7 +657,6 @@ export default function Registrarse({ navigation }) {
 }
 export const stylesRegistrarse = StyleSheet.create({
 	containerMain: {
-		flex: 1,
 		alignItems: "center",
 		backgroundColor: "#fff",
 		gap: 14,

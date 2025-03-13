@@ -161,7 +161,7 @@ export default function App({ navigation }) {
 							<Drawer.Screen
 								name="Login"
 								component={Login}
-								options={{ gestureEnabled: false }}
+								//options={{ gestureEnabled: false }}
 							/>
 							<Drawer.Screen name="Registrar-se" component={Registrarse} />
 						</>
